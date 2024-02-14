@@ -45,4 +45,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function userType()
+    {
+        return $this->belongsTo(UserType::class);
+    }
+
+    public function person()
+    {
+        return $this->hasOne(Person::class);
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\ClientType;
+use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,12 @@ class ClientFactory extends Factory
      */
     public function definition(): array
     {
+        $personIds = Person::pluck('id')->toArray();
+        $clientsTypesIds = ClientType::pluck('id')->toArray();
+
         return [
-            //
+            'person_id' => $this->faker->randomElement($personIds),
+            'client_type_id' => $this->faker->randomElement($clientsTypesIds),
         ];
     }
 }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Quotation extends Model
 {
     use HasFactory;
+
+    public function legalCase()
+    {
+        return $this->hasOne(LegalCase::class);
+    }
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('default_interest_rate')->nullable();
             $table->string('interest_owed')->nullable();
             $table->date('last_payment_day')->nullable();
+            $table->string('currency')->nullable();
             $table->string('base_execution_document')->nullable();
             $table->string('path_base_execution_document')->nullable();
             $table->string('description')->nullable();
