@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::table('users', function (Blueprint $table) {
-        //     $table->unsignedBigInteger('type_user_id')->nullable();
-        //     $table->foreign('type_user_id')->references('id')->on('user_types')->after('name');
-        // });
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('type_user_id')->nullable();
+            $table->foreign('type_user_id')->references('id')->on('user_types')->after('name');
+        });
     }
 
     /**
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::table('users', function (Blueprint $table) {
-        //     $table->dropForeign(['type_user_id']);
-        //     $table->dropColumn('type_user_id');
-        // });
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['type_user_id']);
+            $table->dropColumn('type_user_id');
+        });
     }
 };

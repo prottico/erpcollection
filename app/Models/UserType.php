@@ -13,4 +13,9 @@ class UserType extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
 }

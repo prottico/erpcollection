@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,6 +17,7 @@ class PersonFactory extends Factory
      */
     public function definition(): array
     {
+        $userIds =   User::pluck('id')->toArray();
         return [
             'physical_client' => $this->faker->address(),
             'identification' => $this->faker->unique()->randomNumber(8, true),
@@ -24,8 +26,9 @@ class PersonFactory extends Factory
             'phone' => $this->faker->e164PhoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'associated_company' => $this->faker->company(),
-            'identity_type' => $this->faker->randomElement(['1', '2']),
-            'user_id' => null,
+            'comercial_name' => $this->faker->company(),
+            'identity_type' => $this->faker->randomElement(['national', 'foreigner']),
+            'user_id' =>  $this->faker->randomElement($userIds),
         ];
     }
 }

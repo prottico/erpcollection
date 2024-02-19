@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([RolesSeeder::class]);
         $this->call([AdminUserSeeder::class]);
+        $this->call([UserTypeSeeder::class]);
         $this->call([UserSeeder::class]);
 
         $this->call([ConversationSeeder::class]);
@@ -26,6 +27,5 @@ class DatabaseSeeder extends Seeder
         $this->call([StatusSeeder::class]);
         $this->call([QuotationSeeder::class]);
         $this->call([LegalCaseSeeder::class]);
-
     }
 }
