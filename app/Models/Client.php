@@ -9,7 +9,7 @@ class Client extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['person_id', 'client_type_id', 'user_type_id'];
+    protected $fillable = ['person_id', 'client_type_id', 'user_type_id', 'token'];
 
     public function legalCase()
     {

@@ -18,7 +18,7 @@
                 <div class="card-header mb-2 fw-bold">
                     <div class="row mt-2 px-2">
                         <div class="col-md-9 col-sm-10 col-lg-11 col-xl-11">
-                            <h5>Listado de Abogados</h5>
+                            <h5 class="card-title">Listado de Abogados</h5>
                         </div>
                         <div class="col-md-3 col-lg-1 col-xl-1 text-center">
                             <a href="{{route('lawyers.create')}}" role="button"

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SaveIndependentClientRequest extends FormRequest
+class SaveCompanyClientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,12 @@ class SaveIndependentClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'identity_type_id' => ['required'],
+            'physical_client' => ['required'],
             'identification' => ['required'],
             'name' => ['required'],
-            'lastname' => ['required'],
+            'comercial_name' => ['required'],
             'phone' => ['required'],
             'email' => ['required', 'email'],
-            'associated_company' => ['nullable'],
         ];
     }
 }

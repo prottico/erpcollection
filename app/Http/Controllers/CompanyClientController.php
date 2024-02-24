@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveCompanyClientRequest;
 use App\Models\Client;
 use Illuminate\Http\Request;
 
@@ -21,15 +22,18 @@ class CompanyClientController extends Controller
      */
     public function create()
     {
-        //
+        $physicalClient = $this->physicalClient;
+        return view('clients.company.create', compact('physicalClient'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveCompanyClientRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        $params = ['type_user' => 1, 'prevUrl' => 'company.client.create', 'laterUrl' => 'company.client.index'];
+        return $this->storeDataClients($validatedData, $params);
     }
 
     /**

@@ -9,7 +9,7 @@ class Person extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['physical_client', 'identification', 'name', 'lastname', 'phone', 'email', 'associated_company', 'identity_type', 'comercial_name', 'user_id'];
+    protected $fillable = ['physical_client', 'identification', 'name', 'lastname', 'phone', 'email', 'associated_company', 'identity_type', 'comercial_name', 'user_id', 'identity_type_id'];
 
     public function user()
     {
@@ -19,5 +19,10 @@ class Person extends Model
     public function client()
     {
         return $this->hasOne(Client::class);
+    }
+
+    public function identityType()
+    {
+        return $this->belongsTo(IdentityType::class);
     }
 }

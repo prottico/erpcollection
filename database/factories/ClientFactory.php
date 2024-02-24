@@ -28,6 +28,7 @@ class ClientFactory extends Factory
             'person_id' => $this->faker->randomElement($personIds),
             'client_type_id' => $this->faker->randomElement($clientsTypesIds),
             'user_type_id' => $this->faker->randomElement($userTypeIds),
+            'token' => $this->faker->sha256
         ];
     }
 }

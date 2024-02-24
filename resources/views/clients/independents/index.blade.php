@@ -18,7 +18,7 @@
                 <div class="card-header mb-2 fw-bold">
                     <div class="row mt-2 px-2">
                         <div class="col-md-9 col-sm-10 col-lg-11 col-xl-11">
-                            <h5>Clientes Independientes</h5>
+                            <h5 class="card-title">Clientes Independientes</h5>
                         </div>
                         <div class="col-md-3 col-lg-1 col-xl-1 text-center">
                             <a href="{{route('independent.client.create')}}" role="button"
@@ -59,7 +59,8 @@
                                         {{$item->person->associated_company}}
                                     </td>
                                     <td>
-                                        <a href="#" role="button" class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                        <a href="{{ route('independent.client.show', $item->token) }}" role="button"
+                                            class="btn btn-info"><i class="bi bi-eye"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach

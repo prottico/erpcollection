@@ -19,18 +19,26 @@
             <form class="row g-3" method="POST" action="{{route('independent.client.store')}}">
                 @csrf @method('PATCH')
                 <div class="col-md-4">
-                    <label for="physicalClient" class="form-label @error('name') text-danger fw-bold @enderror">Cliente
+                    <label for="physicalClient"
+                        class="form-label @error('identity_type_id') text-danger fw-bold @enderror">Cliente
                         Físico</label>
-                    <div class="input-group @error('physical_client') text-danger @enderror">
-                        <span class="input-group-text @error('physical_client') border border-danger @enderror">
-                            <i class="bi bi-person @error('physical_client') text-danger @enderror"></i>
+                    <div class="input-group  @error('identity_type_id') text-danger @enderror">
+                        <span class="input-group-text  @error('identity_type_id') border border-danger @enderror">
+                            <i class="bi bi-map  @error('identity_type_id') text-danger @enderror"></i>
                         </span>
-                        <input placeholder="Cliente Físico" type="text" id="physicalClient"
-                            class="form-control @error('physical_client') is-invalid @enderror" name="physical_client"
-                            value="{{old('physical_client')}}">
 
+                        <select name="identity_type_id"
+                            class="form-select @error('identity_type_id') border border-danger @enderror" id="">
+                            <option value="">Seleccione</option>
+                            @foreach($identityTypes as $it)
+                            <option value="{{ $it->id}}" {{ old('identity_type_id')==$it->id ? 'selected' : '' }}>
+                                {{ $it->name }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
-                    @error('physical_client')
+
+                    @error('identity_type_id')
                     <div class="text-danger p-2 mt-1 rounded">
                         <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                         {{ $message }}

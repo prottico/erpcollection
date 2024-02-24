@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Person;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class IndependentClientController extends Controller
@@ -25,8 +26,8 @@ class IndependentClientController extends Controller
      */
     public function create()
     {
-
-        return view('clients.independents.create');
+        $identityTypes = $this->getIdentityTypes();
+        return view('clients.independents.create', compact('identityTypes'));
     }
 
     /**
@@ -34,43 +35,26 @@ class IndependentClientController extends Controller
      */
     public function store(SaveIndependentClientRequest $request)
     {
-        try {
-            $validatedData = $request->validated();
-            $validatedData['type_user_id'] = strval(2);
-
-            if (User::where('email', $validatedData['email'])->exists()) {
-                return redirect()->route('independent.client.create')
-                    ->with('error', 'El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.');
-                return;
-            } else {
-                $user = User::create($validatedData);
-                $person = $user->person()->create($validatedData);
-                $person->client()->create([
-                    'person_id' => $person->id,
-                    'client_type_id' => strval(2),
-                    'user_type_id' => $validatedData['type_user_id'],
-                ]);
-                
-                return redirect()->route('independent.client.index')->with('success', 'Registro creado correctamente');
-            }
-        } catch (\Throwable $th) {
-            Log::error('Error creando registro de petición:', [
-                'message' => $th->getMessage(),
-                'data' => $validatedData,
-            ]);
-
-            return redirect()->route('independent.client.index')->with('error', 'Ocurrió un error al crear el registro. Por favor, inténtelo de nuevo.');
-        }
+        $validatedData = $request->validated();
+        $params = ['type_user' => 2, 'prevUrl' => 'independent.client.create', 'laterUrl' => 'independent.client.index'];
+        return $this->storeDataClients($validatedData, $params);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($token)
     {
-        //
+        try {
+            $identityTypes = $this->getIdentityTypes();
+            $client = Client::where('token', $token)->with(['person', 'person.identityType'])->first();
+            return view('clients.independents.show', compact('identityTypes', 'client'));
+        } catch (\Throwable $th) {
+            Log::error('Error:', [
+                'message' => $th->getMessage()
+            ]);
+        }
     }
-
     /**
      * Show the form for editing the specified resource.
      */

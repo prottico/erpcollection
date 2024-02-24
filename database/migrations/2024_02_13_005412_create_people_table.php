@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('associated_company')->nullable();
             // Company client
-            $table->enum('identity_type', ['national', 'foreigner'])->nullable();
+            // $table->enum('identity_type', ['national', 'foreigner'])->nullable();
             $table->string('comercial_name')->nullable();
 
             // Relation with User

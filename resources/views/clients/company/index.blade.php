@@ -18,10 +18,10 @@
                 <div class="card-header mb-2 fw-bold">
                     <div class="row mt-2 px-2">
                         <div class="col-md-9 col-sm-10 col-lg-11 col-xl-11">
-                            <h5>Clientes Empresas</h5>
+                            <h5 class="card-title">Clientes Empresas</h5>
                         </div>
                         <div class="col-md-3 col-lg-1 col-xl-1 text-center">
-                            <a href="#" role="button"
+                            <a href="{{route('company.client.create')}}" role="button"
                                 class="btn btn-primary w-lg-100">Nuevo</a>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                                         {{$item->person->name}}
                                     </td>
                                     <td>
-                                        {{$item->person->identity_type}}
+                                        {{$item->person->physical_client}}
                                     </td>
                                     <td>
                                         {{$item->person->comercial_name}}

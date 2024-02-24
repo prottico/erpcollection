@@ -36,14 +36,18 @@ Route::middleware('auth')->group(function () {
         // Lawyers
         Route::get('/abogados', [LawyersController::class, 'index'])->name('lawyers.index');
         Route::get('/abogados/nuevo', [LawyersController::class, 'create'])->name('lawyers.create');
+        Route::patch('/abogados/nuevo', [LawyersController::class, 'store'])->name('lawyers.store');
 
         // Independents Clients
         Route::get('/clientes/independientes', [IndependentClientController::class, 'index'])->name('independent.client.index');
         Route::get('/clientes/independientes/nuevo', [IndependentClientController::class, 'create'])->name('independent.client.create');
         Route::patch('/clientes/independientes/nuevo', [IndependentClientController::class, 'store'])->name('independent.client.store');
+        Route::get('/cliente/independiente/{token}', [IndependentClientController::class, 'show'])->name('independent.client.show');
 
         // Company Clients
         Route::get('/clientes/empresas', [CompanyClientController::class, 'index'])->name('company.client.index');
+        Route::get('/clientes/empresas/nuevo', [CompanyClientController::class, 'create'])->name('company.client.create');
+        Route::patch('/clientes/empresas/nuevo', [CompanyClientController::class, 'store'])->name('company.client.store');
     });
 });
 

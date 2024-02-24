@@ -19,6 +19,7 @@ return new class extends Migration
             // Clients types
             $table->unsignedBigInteger('client_type_id')->nullable();
             $table->foreign('client_type_id')->references('id')->on('client_types')->onDelete('cascade');
+            $table->string('token')->nullable();
             $table->timestamps();
         });
     }
