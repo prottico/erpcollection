@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,6 +17,8 @@ class QuotationFactory extends Factory
      */
     public function definition(): array
     {
+        $clientsIds = Client::pluck('id')->toArray();
+        
         return [
             'credit_start_date' => $this->faker->date(),
             'debt_capital' => $this->faker->randomNumber(),
@@ -29,6 +32,7 @@ class QuotationFactory extends Factory
             'path_base_execution_document' => $this->faker->imageUrl(),
             'description' => $this->faker->text(50),
             'comments' => $this->faker->text(30),
+            'client_id' => $this->faker->randomElement($clientsIds)
         ];
     }
 }
