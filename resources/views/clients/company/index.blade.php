@@ -48,7 +48,7 @@
                                         {{$item->person->name}}
                                     </td>
                                     <td>
-                                        {{$item->person->physical_client}}
+                                        {{$item->person->identityType->name}}
                                     </td>
                                     <td>
                                         {{$item->person->comercial_name}}
