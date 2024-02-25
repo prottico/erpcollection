@@ -23,6 +23,11 @@ class Controller extends BaseController
         return IdentityType::all();
     }
 
+    public function getFakerToken()
+    {
+        $faker = Faker::create();
+        return strval($faker->unique()->sha256());
+    }
 
     public function getClientsByType($type)
     {
@@ -37,21 +42,18 @@ class Controller extends BaseController
     public function storeDataClients($validatedData, array $params)
     {
         try {
-
             if (User::where('email', $validatedData['email'])->exists()) {
                 return redirect()->route($params['prevUrl'])
                     ->with('error', 'El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.');
             } else {
-                
+
                 $user = User::create($validatedData);
                 $person = $user->person()->create($validatedData);
-                $faker = Faker::create();
-
                 $person->client()->create([
                     'person_id' => $person->id,
                     'client_type_id' => strval($params['type_user']),
                     'user_type_id' =>  strval($params['type_user']),
-                    'token' => strval($faker->unique()->sha256())
+                    'token' => $this->getFakerToken()
                 ]);
 
                 return redirect()->route($params['laterUrl'])->with('success', 'Registro creado correctamente');

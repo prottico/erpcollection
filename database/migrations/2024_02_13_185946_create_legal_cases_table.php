@@ -16,19 +16,19 @@ return new class extends Migration
             $table->string('code')->nullable();
             // Client
             $table->unsignedBigInteger('client_id')->nullable();
-            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             // Type Case
             $table->unsignedBigInteger('type_case_id')->nullable();
-            $table->foreign('type_case_id')->references('id')->on('type_cases');
+            $table->foreign('type_case_id')->references('id')->on('type_cases')->onDelete('cascade');
             // Conversation
             $table->unsignedBigInteger('conversation_id')->nullable();
-            $table->foreign('conversation_id')->references('id')->on('conversations');
+            $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             // Statuses
             $table->unsignedBigInteger('status_id')->nullable();
-            $table->foreign('status_id')->references('id')->on('statuses');
+            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
             // Statuses
             $table->unsignedBigInteger('quotation_id')->nullable();
-            $table->foreign('quotation_id')->references('id')->on('quotations');
+            $table->foreign('quotation_id')->references('id')->on('quotations')->onDelete('cascade');
             $table->timestamps();
         });
     }

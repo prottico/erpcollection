@@ -9,7 +9,7 @@ class Person extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['physical_client', 'identification', 'name', 'lastname', 'phone', 'email', 'associated_company', 'identity_type', 'comercial_name', 'user_id', 'identity_type_id'];
+    protected $fillable = ['physical_client', 'identification', 'name', 'lastname', 'phone', 'email', 'associated_company', 'identity_type', 'comercial_name', 'user_id', 'identity_type_id', 'token'];
 
     public function user()
     {

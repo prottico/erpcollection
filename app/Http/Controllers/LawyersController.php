@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveLawyersRequest;
+use App\Models\Client;
+use App\Models\Person;
 use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -14,7 +17,7 @@ class LawyersController extends Controller
      */
     public function index(User $users)
     {
-        $data = User::where('type_user_id', 3)->whereHas('person')->with('person')->get();
+        $data = User::where('type_user_id', 3)->whereHas('person')->with(['person', 'person.client'])->get();
         return view('lawyers.index', compact('data'));
     }
 
@@ -31,6 +34,10 @@ class LawyersController extends Controller
      */
     public function store(SaveLawyersRequest $request)
     {
+        // $validatedData = $request->validated();
+        // $params = ['type_user' => 3, 'prevUrl' => 'lawyers.create', 'laterUrl' => 'lawyers.index'];
+        // return $this->storeDataClients($validatedData, $params);
+
         try {
             $validatedData = $request->validated();
             $validatedData['type_user_id'] = strval(3);
@@ -63,9 +70,16 @@ class LawyersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $token)
     {
-        //
+        try {
+            $lawyer = Person::where('token', $token)->with(['user'])->first();
+            return view('lawyers.show', compact('lawyer'));
+        } catch (\Throwable $th) {
+            Log::error('Error:', [
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -79,9 +93,20 @@ class LawyersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveLawyersRequest $request, Person $lawyer)
     {
-        //
+        try {
+            $faker = Faker::create();
+            $validatedData = $request->validated();
+            $validatedData['token'] = strval($faker->unique()->sha256());
+            $lawyer->update($validatedData);
+            $validatedData['token'] = strval($faker->unique()->sha256());
+            $lawyer->user->update($validatedData);
+            return redirect()->route('lawyers.index')->with('success', 'Registro actualizado correctamente!');
+        } catch (\Throwable $th) {
+            Log::error('Error:', ['message' => $th->getMessage()]);
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el registro.');
+        }
     }
 
     /**
@@ -89,6 +114,15 @@ class LawyersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $lawyer = User::where('id', $id)->with('person')->first();
+            $lawyer->person()->delete();
+            $lawyer->delete();
+            return redirect()->route('lawyers.index')->with('success', 'Registro eliminado correctamente!');
+        } catch (\Throwable $th) {
+            Log::error('Error:', [
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

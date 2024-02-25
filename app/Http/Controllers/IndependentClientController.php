@@ -66,9 +66,23 @@ class IndependentClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveIndependentClientRequest $request, Client $client)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+            $validatedData['token'] = $this->getFakerToken();
+
+            $client->update($validatedData);
+            $validatedData['token'] = $this->getFakerToken();
+
+            $client->person->update($validatedData);
+            return redirect()->route('independent.client.index')->with('success', 'Registro actualizado correctamente!');
+        } catch (\Throwable $th) {
+            Log::error('Error:', [
+                'message' => $th->getMessage()
+            ]);
+            return redirect()->route('independent.client.index')->with('Error', 'Error al actualizar el registro!');
+        }
     }
 
     /**
@@ -76,6 +90,16 @@ class IndependentClientController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $client = Client::find($id);
+            $client->person->user->delete();
+            $client->person->delete();
+            $client->delete();
+            return redirect()->route('independent.client.index')->with('success', 'Registro eliminado correctamente!');
+        } catch (\Throwable $th) {
+            Log::error('Error:', [
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

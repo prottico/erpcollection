@@ -13,6 +13,6 @@ class PersonSeeder extends Seeder
      */
     public function run(): void
     {
-        Person::factory(40)->create();
+        Person::factory(10)->create();
     }
 }

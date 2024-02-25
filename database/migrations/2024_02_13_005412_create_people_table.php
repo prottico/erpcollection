@@ -28,6 +28,7 @@ return new class extends Migration
             // Relation with User
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('token')->nullable();
 
             $table->timestamps();
         });

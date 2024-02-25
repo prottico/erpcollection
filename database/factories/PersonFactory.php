@@ -31,6 +31,7 @@ class PersonFactory extends Factory
             'comercial_name' => $this->faker->company(),
             'identity_type_id' => $this->faker->randomElement($identityTypes),
             'user_id' =>  $this->faker->randomElement($userIds),
+            'token' => $this->faker->sha256
         ];
     }
 }

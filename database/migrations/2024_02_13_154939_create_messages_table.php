@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             // Conversation
             $table->unsignedBigInteger('conversation_id')->nullable();
-            $table->foreign('conversation_id')->references('id')->on('conversations');
+            $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             // Transmitter
             $table->unsignedBigInteger('transmitter_id')->nullable();
-            $table->foreign('transmitter_id')->references('id')->on('users');
+            $table->foreign('transmitter_id')->references('id')->on('users')->onDelete('cascade');
             // Receiver
             $table->unsignedBigInteger('receiver_id')->nullable();
-            $table->foreign('receiver_id')->references('id')->on('users');
-            
+            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->text('body');
             $table->timestamps();
         });

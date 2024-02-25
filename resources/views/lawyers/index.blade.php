@@ -29,8 +29,7 @@
                 <div class="card-body">
                     @if(count($data) > 0)
                     <div class="table-responsive">
-                        <table class="table table-responsive table-striped table-borderless datatable"
-                            id="adminUsersTable">
+                        <table class="table table-responsive  table-borderless datatable" id="adminUsersTable">
                             <thead>
                                 <tr>
                                     <th>Nombres</th>
@@ -55,8 +54,23 @@
                                     <td>
                                         {{$item->person->email}}
                                     </td>
-                                    <td>
-                                        <a href="#" role="button" class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                    <td class="row w-75">
+                                        <div class="col-6 p-0 w-50">
+                                            <a href="{{route('lawyers.show', $item->person->token)}}" role="button"
+                                                class="btn btn-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-6 p-0 w-50">
+                                            <form id="deleteForm" action="{{route('lawyers.destroy', $item->id)}}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -71,5 +85,15 @@
             </div>
         </div>
     </div>
+
+    {{-- <script>
+        function confirmDelete(event) {
+            event.preventDefault(); // Detener el envío del formulario por defecto
+
+            if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
+                document.getElementById('deleteForm').submit(); // Enviar el formulario
+            }
+        }
+    </script> --}}
 
 </x-layouts.app>

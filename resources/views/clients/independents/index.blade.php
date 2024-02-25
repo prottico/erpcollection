@@ -58,9 +58,28 @@
                                     <td>
                                         {{$item->person->associated_company}}
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <a href="{{ route('independent.client.show', $item->token) }}" role="button"
                                             class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                    </td> --}}
+
+                                    <td class="row w-75">
+                                        <div class="col-6">
+                                            <a href="{{route('independent.client.show', $item->token)}}" role="button"
+                                                class="btn btn-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <form id=""
+                                                action="{{route('independent.client.destroy', $item->id)}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

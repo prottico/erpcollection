@@ -22,8 +22,8 @@ class CompanyClientController extends Controller
      */
     public function create()
     {
-        $physicalClient = $this->physicalClient;
-        return view('clients.company.create', compact('physicalClient'));
+        $identityTypes = $this->getIdentityTypes();
+        return view('clients.company.create', compact('identityTypes'));
     }
 
     /**
@@ -32,6 +32,7 @@ class CompanyClientController extends Controller
     public function store(SaveCompanyClientRequest $request)
     {
         $validatedData = $request->validated();
+        // dd($validatedData);
         $params = ['type_user' => 1, 'prevUrl' => 'company.client.create', 'laterUrl' => 'company.client.index'];
         return $this->storeDataClients($validatedData, $params);
     }

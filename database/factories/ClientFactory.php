@@ -20,12 +20,10 @@ class ClientFactory extends Factory
      */
     public function definition(): array
     {
-        $personIds = Person::pluck('id')->toArray();
         $clientsTypesIds = ClientType::pluck('id')->toArray();
         $userTypeIds = UserType::pluck('id')->toArray();
 
         return [
-            'person_id' => $this->faker->randomElement($personIds),
             'client_type_id' => $this->faker->randomElement($clientsTypesIds),
             'user_type_id' => $this->faker->randomElement($userTypeIds),
             'token' => $this->faker->sha256

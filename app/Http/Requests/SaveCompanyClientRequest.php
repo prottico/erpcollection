@@ -22,7 +22,7 @@ class SaveCompanyClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'physical_client' => ['required'],
+            'identity_type_id' => ['required'],
             'identification' => ['required'],
             'name' => ['required'],
             'comercial_name' => ['required'],
