@@ -37,14 +37,29 @@
         </li><!-- End Icons Nav -->
         @endrole
 
-        <li class="nav-heading">Pages</li>
+        @role('general-admin')
+        <li class="nav-heading">Cotizaciones</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="users-profile.html">
+            <a class="nav-link collapsed" href="{{route('quotations.index')}}">
                 <i class="bi bi-coin"></i>
                 <span>Cotizaciones</span>
             </a>
         </li>
+
+        @endrole
+
+        @role('independent-client')
+        <li class="nav-heading">Cotizaciones</li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('clients.quotations.index')}}">
+                <i class="bi bi-coin"></i>
+                <span>Cotizaciones</span>
+            </a>
+        </li>
+
+        @endrole
 
     </ul>
 

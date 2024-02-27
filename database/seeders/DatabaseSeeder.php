@@ -16,17 +16,18 @@ class DatabaseSeeder extends Seeder
         $this->call([RolesSeeder::class]);
         $this->call([AdminUserSeeder::class]);
         $this->call([UserTypeSeeder::class]);
+        $this->call([ClientTypeSeeder::class]);
+        $this->call([IdentityTypeSeeder::class]);
         $this->call([UserSeeder::class]);
 
         $this->call([ConversationSeeder::class]);
         $this->call([MessageSeeder::class]);
 
-        $this->call([ClientTypeSeeder::class]);
         $this->call([TypeCaseSeeder::class]);
-        $this->call([IdentityTypeSeeder::class]);
         $this->call([PersonSeeder::class]);
         $this->call([ClientSeeder::class]);
         $this->call([StatusSeeder::class]);
+        $this->call([TypePaymentSeeder::class]);
         $this->call([QuotationSeeder::class]);
         $this->call([LegalCaseSeeder::class]);
     }

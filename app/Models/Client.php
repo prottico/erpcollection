@@ -30,4 +30,9 @@ class Client extends Model
     {
         return $this->belongsTo(UserType::class);
     }
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class, 'client_id');
+    }
 }

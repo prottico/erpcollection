@@ -44,15 +44,17 @@ class LawyersController extends Controller
 
             if (User::where('email', $validatedData['email'])->exists()) {
                 return redirect()->route('lawyers.create')
-                    ->with('error', 'El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.');
+                ->with('error', 'El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.');
             } else {
 
                 $user = User::create($validatedData);
+                $validatedData['token'] = $this->getFakerToken();
                 $person = $user->person()->create($validatedData);
                 $person->client()->create([
                     'person_id' => $person->id,
                     'client_type_id' => strval(2),
                     'user_type_id' => $validatedData['type_user_id'],
+                    'token' => $this->getFakerToken()
                 ]);
 
                 return redirect()->route('lawyers.index')->with('success', 'Registro creado correctamente');

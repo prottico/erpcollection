@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\ClientsQuotationsController;
 use App\Http\Controllers\CompanyClientController;
 use App\Http\Controllers\IndependentClientController;
 use App\Http\Controllers\LawyersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuotationsController;
+use App\Models\Quotation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,6 +56,21 @@ Route::middleware('auth')->group(function () {
         Route::get('/clientes/empresas', [CompanyClientController::class, 'index'])->name('company.client.index');
         Route::get('/clientes/empresas/nuevo', [CompanyClientController::class, 'create'])->name('company.client.create');
         Route::patch('/clientes/empresas/nuevo', [CompanyClientController::class, 'store'])->name('company.client.store');
+
+        // Quotations
+        Route::get('/cotizaciones', [QuotationsController::class, 'index'])->name('quotations.index');
+    });
+
+    // Cotizaciones de Admin y Clientes
+    Route::group(['middleware' => ['role:general-admin|independent-client']], function () {
+        Route::get('/cotizaciones/nuevo', [QuotationsController::class, 'create'])->name('quotations.create');
+        Route::get('/cotizaciones/{token}', [QuotationsController::class, 'show'])->name('quotations.show');
+        Route::patch('/cotizaciones/nuevo', [QuotationsController::class, 'store'])->name('quotations.store');
+    });
+
+    // Cotizaciones por Clientes
+    Route::group(['middleware' => ['role:independent-client']], function () {
+        Route::get('/mis-cotizaciones', [ClientsQuotationsController::class, 'index'])->name('clients.quotations.index');
     });
 });
 
