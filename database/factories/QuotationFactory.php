@@ -3,7 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Client;
+use App\Models\Quotation;
+use App\Models\TypeCase;
 use App\Models\TypePayment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,10 +19,14 @@ class QuotationFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
+
+        $lawyerIds = User::where('type_user_id', 3)->pluck('id')->toArray();
         $clientsIds = Client::whereNotIn('person_id', [1, 2])->pluck('id')->toArray();
         $typePaymentIds = TypePayment::pluck('id')->toArray();
+        $typeCasesIds = TypeCase::pluck('id')->toArray();
 
         return [
             'credit_start_date' =>  \Carbon\Carbon::parse($this->faker->dateTime()->format('d-m-Y')),
@@ -32,10 +39,12 @@ class QuotationFactory extends Factory
             'currency' => $this->faker->currencyCode(),
             'base_execution_document' => $this->faker->text(15),
             'path_base_execution_document' => $this->faker->imageUrl(),
-            'description' => $this->faker->text(50),
-            'comments' => $this->faker->text(30),
+            'description' => trim($this->faker->text(50)),
+            'comments' => trim($this->faker->text(30)),
             'client_id' => $this->faker->randomElement($clientsIds),
+            'type_case_id' => $this->faker->randomElement($typeCasesIds),
             'type_payment_id' => $this->faker->randomElement($typePaymentIds),
+            'lawyer_commet' => $this->faker->text(15),
             'token' => $this->faker->sha256
         ];
     }

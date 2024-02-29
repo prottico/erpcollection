@@ -14,6 +14,19 @@
 
     <div class="row">
         <div class="col-md-12">
+
+            @foreach ($data as $item)
+                @if ($item->lawyer && $item->cost)
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Felicidades!</strong> La Cotizacion de Código <strong>{{$item->code}}</strong> ha sido
+                    procesada por un
+                    abogado! Ya puedes verlo!.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                @endif
+            @endforeach
+
             <div class="card mb-4">
                 <div class="card-header mb-2 fw-bold">
                     <div class="row mt-2 px-2">
@@ -33,6 +46,7 @@
                             <thead>
                                 <tr>
                                     <th title="Cliente">Cliente</th>
+                                    <th title="Codigo">Código</th>
                                     <th title="Fecha de Inicio de crédito">Fecha Inicio</th>
                                     <th title="Plazo">Plazo</th>
                                     <th title="Tasa de Interés corriente">Tasa Int. Corriente</th>
@@ -48,7 +62,9 @@
                                     <td>
                                         {{$item->client->person->name}}
                                     </td>
-
+                                    <td>
+                                        {{$item->code}}
+                                    </td>
                                     <td>
                                         {{ \Carbon\Carbon::parse($item->credit_start_date)->format('d-m-Y') }}
                                         {{-- {{ $item->credit_start_date->format('d-m-Y')}} --}}

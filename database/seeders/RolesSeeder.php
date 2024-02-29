@@ -16,7 +16,8 @@ class RolesSeeder extends Seeder
         // Colección de roles
         $roles = [
             ['name' => 'general-admin', 'guard_name' => 'web', 'label' => 'Administrador'],
-            ['name' => 'independent-client', 'guard_name' => 'web', 'label' => 'Cliente Independiente']
+            ['name' => 'independent-client', 'guard_name' => 'web', 'label' => 'Cliente Independiente'],
+            ['name' => 'lawyer', 'guard_name' => 'web', 'label' => 'Abogado']
         ];
 
         // Crear un registro para cada rol

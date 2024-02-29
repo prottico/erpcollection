@@ -9,7 +9,20 @@ class Person extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['physical_client', 'identification', 'name', 'lastname', 'phone', 'email', 'associated_company', 'identity_type', 'comercial_name', 'user_id', 'identity_type_id', 'token'];
+    protected $fillable = [
+        'physical_client',
+        'identification',
+        'name',
+        'lastname',
+        'phone',
+        'email',
+        'associated_company',
+        'identity_type',
+        'comercial_name',
+        'user_id',
+        'identity_type_id',
+        'token'
+    ];
 
     public function user()
     {
@@ -24,5 +37,10 @@ class Person extends Model
     public function identityType()
     {
         return $this->belongsTo(IdentityType::class);
+    }
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class, 'lawyer_id');
     }
 }

@@ -9,6 +9,17 @@ class Quotation extends Model
 {
     use HasFactory;
 
+    /**
+     * Set the description attribute.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = trim($value);
+    }
+
     protected $fillable = [
         'credit_start_date',
         'debt_capital',
@@ -24,7 +35,12 @@ class Quotation extends Model
         'comments',
         'token',
         'client_id',
-        'type_payment_id'
+        'type_payment_id',
+        'lawyer_id',
+        'cost',
+        'type_case_id',
+        'code',
+        'lawyer_commet'
     ];
 
     public function legalCase()
@@ -40,5 +56,15 @@ class Quotation extends Model
     public function documents()
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function lawyer()
+    {
+        return $this->belongsTo(Person::class);
+    }
+
+    public function typeCase()
+    {
+        return $this->belongsTo(TypeCase::class);
     }
 }

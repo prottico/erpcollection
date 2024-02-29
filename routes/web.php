@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientsQuotationsController;
 use App\Http\Controllers\CompanyClientController;
 use App\Http\Controllers\IndependentClientController;
 use App\Http\Controllers\LawyersController;
+use App\Http\Controllers\LawyersQuotationsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuotationsController;
 use App\Models\Quotation;
@@ -21,7 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
@@ -59,6 +61,7 @@ Route::middleware('auth')->group(function () {
 
         // Quotations
         Route::get('/cotizaciones', [QuotationsController::class, 'index'])->name('quotations.index');
+        Route::post('/asignar-abogado', [QuotationsController::class, 'assignLawyer'])->name('quotations.assign.lawyer');
     });
 
     // Cotizaciones de Admin y Clientes
@@ -66,6 +69,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/cotizaciones/nuevo', [QuotationsController::class, 'create'])->name('quotations.create');
         Route::get('/cotizaciones/{token}', [QuotationsController::class, 'show'])->name('quotations.show');
         Route::patch('/cotizaciones/nuevo', [QuotationsController::class, 'store'])->name('quotations.store');
+    });
+
+    // Cotizaciones para abogados
+    Route::group(['middleware' => ['role:lawyer']], function () {
+        Route::get('/cotizaciones-asignadas', [LawyersQuotationsController::class, 'index'])->name('lawyers.quotations.index');
+        Route::get('/cotizaciones-asignadas/{token}', [QuotationsController::class, 'show'])->name('lawyers.quotations.show');
+        Route::patch('/cotizaciones-asignadas/{token}', [QuotationsController::class, 'update'])->name('lawyers.quotations.update');
     });
 
     // Cotizaciones por Clientes

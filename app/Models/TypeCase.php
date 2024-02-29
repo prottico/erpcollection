@@ -9,8 +9,17 @@ class TypeCase extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name'
+    ];
+
     public function legalCase()
     {
         return $this->hasOne(LegalCase::class);
+    }
+
+    public function quotation()
+    {
+        return $this->hasOne(Quotation::class);
     }
 }

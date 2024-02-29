@@ -4,18 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Quotation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
-class ClientsQuotationsController extends Controller
+class LawyersQuotationsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-public function index(Request $request)
+    public function index(Request $request)
     {
-        $client = $request->user()->person->client->id;
-        $data = Quotation::where('client_id', $client)->get();
-        return view('quotations.clients.index', compact('data'));
+        $id = $request->user()->person->id;
+        $data = Quotation::where('lawyer_id', $id)->get();
+        return view('quotations.index', compact('data'));
     }
 
     /**

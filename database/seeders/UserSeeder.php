@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
         $identityTypes = IdentityType::pluck('id')->toArray();
         $faker = Faker::create();
 
+        // Creacion de un cliente independiente
         $independentUser = User::create([
             'name' => 'Cliente Independiente',
             'email' => 'independiente@erpcollection.com',
@@ -45,6 +46,27 @@ class UserSeeder extends Seeder
         ]);
 
         $independentUser->assignRole('independent-client');
+
+        // Cracion de un abogado
+        $lawyerUser = User::create([
+            'type_user_id' => 3,
+            'name' => 'Abogado de prueba',
+            'email' => 'abogado@erpcollection.com',
+            'password' => Hash::make('1234')
+        ]);
+
+        $lawyerUser->person()->create([
+            'identification' => $faker->unique()->randomNumber(8, true),
+            'name' => $lawyerUser->name,
+            'lastname' => $faker->lastName(),
+            'phone' => $faker->e164PhoneNumber(),
+            'email' => $lawyerUser->email,
+            'identity_type_id' => $faker->randomElement($identityTypes),
+            'user_id' =>  $lawyerUser->id,
+            'token' => $faker->sha256
+        ]);
+
+        $lawyerUser->assignRole('lawyer');
 
         User::factory(20)->create();
     }

@@ -3,7 +3,6 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        @role('general-admin')
         <li class="nav-item">
             <a class="nav-link " href="{{route('dashboard')}}">
                 <i class="bi bi-grid"></i>
@@ -11,6 +10,7 @@
             </a>
         </li><!-- End Dashboard Nav -->
 
+        @role('general-admin')
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{route('lawyers.index')}}">
                 <i class="bi bi-people"></i>
@@ -54,6 +54,18 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{route('clients.quotations.index')}}">
+                <i class="bi bi-coin"></i>
+                <span>Cotizaciones</span>
+            </a>
+        </li>
+
+        @endrole
+
+        @role('lawyer')
+        <li class="nav-heading">Cotizaciones</li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('lawyers.quotations.index')}}">
                 <i class="bi bi-coin"></i>
                 <span>Cotizaciones</span>
             </a>

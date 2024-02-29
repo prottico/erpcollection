@@ -20,10 +20,12 @@
                         <div class="col-md-9 col-sm-10 col-lg-11 col-xl-11">
                             <h5 class="card-title">Listado de Cotizaciones</h5>
                         </div>
+                        @role('independent-client')
                         <div class="col-md-3 col-lg-1 col-xl-1 text-center">
                             <a href="{{route('quotations.create')}}" role="button"
                                 class="btn btn-primary w-lg-100">Nuevo</a>
                         </div>
+                        @endrole
                     </div>
                 </div>
                 <div class="card-body">
@@ -33,6 +35,7 @@
                             <thead>
                                 <tr>
                                     <th title="Cliente">Cliente</th>
+                                    <th title="Codigo">Código</th>
                                     <th title="Fecha de Inicio de crédito">Fecha Inicio</th>
                                     <th title="Plazo">Plazo</th>
                                     <th title="Tasa de Interés corriente">Tasa Int. Corriente</th>
@@ -47,6 +50,9 @@
                                 <tr>
                                     <td>
                                         {{$item->client->person->name}}
+                                    </td>
+                                    <td>
+                                        {{$item->code}}
                                     </td>
 
                                     <td>
@@ -71,10 +77,18 @@
                                         {{ \Carbon\Carbon::parse($item->last_payment_day)->format('d-m-Y') }}
                                         {{-- {{ $item->last_payment_day->format('d-m-Y') }} --}}
                                     </td>
+                                    @role('general-admin|independent-client')
                                     <td>
                                         <a href="{{route('quotations.show', $item->token)}}" role="button"
                                             class="btn btn-info"><i class="bi bi-eye"></i></a>
                                     </td>
+                                    @endrole
+                                    @role('lawyer')
+                                    <td>
+                                        <a href="{{route('lawyers.quotations.show', $item->token)}}" role="button"
+                                            class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                    </td>
+                                    @endrole
                                 </tr>
                                 @endforeach
                             </tbody>

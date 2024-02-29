@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::table('quotations', function (Blueprint $table) {
             $table->unsignedBigInteger('type_payment_id')->nullable();
             $table->foreign('type_payment_id')->references('id')->on('type_payments')->after('name')->onDelete('cascade');
+            $table->unsignedBigInteger('type_case_id')->nullable();
+            $table->foreign('type_case_id')->references('id')->on('type_cases')->onDelete('cascade');
         });
     }
 
@@ -25,6 +27,8 @@ return new class extends Migration
         Schema::table('quotations', function (Blueprint $table) {
             $table->dropForeign(['type_payment_id']);
             $table->dropColumn('type_payment_id');
+            $table->dropForeign(['type_case_id']);
+            $table->dropColumn('type_case_id');
         });
     }
 };
