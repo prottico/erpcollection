@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             // Independent client
-            $table->string('physical_client')->nullable();
+            // $table->string('physical_client')->nullable();
             $table->string('identification')->nullable();
             $table->string('name')->nullable();
             $table->string('lastname')->nullable();

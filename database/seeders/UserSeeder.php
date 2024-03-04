@@ -48,6 +48,34 @@ class UserSeeder extends Seeder
 
         $independentUser->assignRole('independent-client');
 
+        // Creacion de un cliente compañía
+        $companyUser = User::create([
+            'name' => 'Cliente Compañía',
+            'email' => 'company@erpcollection.com',
+            'password' => Hash::make('1234')
+        ]);
+
+        $company = $companyUser->person()->create([
+            'identification' => $faker->unique()->randomNumber(8, true),
+            'name' => $companyUser->name,
+            'lastname' => $faker->lastName(),
+            'phone' => $faker->e164PhoneNumber(),
+            'email' => $companyUser->email,
+            'identity_type_id' => $faker->randomElement($identityTypes),
+            'user_id' =>  $companyUser->id,
+            'token' => $faker->sha256,
+            'associated_company' => $faker->company(),
+        ]);
+
+        $company->client()->create([
+            'person_id' => $company->id,
+            'client_type_id' => 1,
+            'user_type_id' => 1,
+            'token' => $faker->sha256,
+        ]);
+
+        $companyUser->assignRole('company-client');
+
         // Cracion de un abogado
         $lawyerUser = User::create([
             'type_user_id' => 3,

@@ -21,7 +21,7 @@ class PersonFactory extends Factory
         $userIds = User::pluck('id')->toArray();
         $identityTypes = IdentityType::pluck('id')->toArray();
         return [
-            'physical_client' => $this->faker->address(),
+            // 'physical_client' => $this->faker->address(),
             'identification' => $this->faker->unique()->randomNumber(8, true),
             'name' => $this->faker->name(),
             'lastname' => $this->faker->lastName(),

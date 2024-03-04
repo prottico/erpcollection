@@ -51,7 +51,8 @@
                                         {{$item->person->identityType->name}}
                                     </td>
                                     <td>
-                                        {{$item->person->comercial_name}}
+                                        {{$item->person->comercial_name ? $item->person->comercial_name : '---- NA ----'
+                                        }}
                                     </td>
                                     <td>
                                         {{$item->person->phone}}
