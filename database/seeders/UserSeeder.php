@@ -35,14 +35,15 @@ class UserSeeder extends Seeder
             'email' => $independentUser->email,
             'identity_type_id' => $faker->randomElement($identityTypes),
             'user_id' =>  $independentUser->id,
-            'token' => $faker->sha256
+            'token' => $faker->sha256,
+            'associated_company' => $faker->company()
         ]);
 
         $person->client()->create([
             'person_id' => $person->id,
             'client_type_id' => 2,
             'user_type_id' => 2,
-            'token' => $faker->sha256
+            'token' => $faker->sha256,
         ]);
 
         $independentUser->assignRole('independent-client');

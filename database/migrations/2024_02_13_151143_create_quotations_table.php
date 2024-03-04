@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
             $table->date('credit_start_date')->nullable();
+            $table->date('credit_due_date')->nullable();
             $table->string('debt_capital')->nullable();
             $table->string('term')->nullable();
             $table->string('current_interest_rate')->nullable();

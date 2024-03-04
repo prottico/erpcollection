@@ -40,7 +40,9 @@ class Quotation extends Model
         'cost',
         'type_case_id',
         'code',
-        'lawyer_commet'
+        'lawyer_commet',
+        'credit_due_date',
+        'currency_id'
     ];
 
     public function legalCase()
@@ -66,5 +68,10 @@ class Quotation extends Model
     public function typeCase()
     {
         return $this->belongsTo(TypeCase::class);
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 }

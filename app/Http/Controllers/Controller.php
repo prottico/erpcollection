@@ -33,7 +33,7 @@ class Controller extends BaseController
     {
         return Client::where('client_type_id', $type)
             ->whereHas('person', function ($query) {
-                $query->whereNotIn('id', [1]);
+                $query->whereNotIn('id', [1,3]);
             })
             ->with(['person', 'userType'])
             ->get();

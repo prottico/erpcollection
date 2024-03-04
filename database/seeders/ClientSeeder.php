@@ -14,7 +14,7 @@ class ClientSeeder extends Seeder
      */
     public function run()
     {
-        $people = Person::all();
+        $people = Person::whereNotIn('id', [2])->get();
 
         $people->each(function ($person) {
             Client::factory()->create([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveLawyerQuotationRequest;
 use App\Http\Requests\SaveLawyersRequest;
 use App\Http\Requests\SaveQuotationRequest;
+use App\Models\Currency;
 use App\Models\Quotation;
 use App\Models\TypeCase;
 use App\Models\User;
@@ -31,7 +32,8 @@ class QuotationsController extends Controller
      */
     public function create()
     {
-        return view('quotations.create');
+        $currencies = Currency::all();
+        return view('quotations.create', compact('currencies'));
     }
 
     /**
@@ -86,7 +88,8 @@ class QuotationsController extends Controller
             $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase'])->first();
             $lawyers = User::where('type_user_id', 3)->whereHas('person')->with(['person'])->get();
             $typeCases = TypeCase::all();
-
+            $currency = Currency::find($quotation->currency_id);
+            
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
                 $user = Auth::user();
@@ -96,7 +99,7 @@ class QuotationsController extends Controller
                     $view = 'quotations.show';
                 }
             };
-            return view($view, compact('quotation', 'lawyers', 'typeCases'));
+            return view($view, compact('quotation', 'lawyers', 'typeCases', 'currency'));
         } catch (\Throwable $th) {
             Log::error(['Message' => $th->getMessage()]);
         }
