@@ -42,7 +42,8 @@ class Quotation extends Model
         'code',
         'lawyer_commet',
         'credit_due_date',
-        'currency_id'
+        'currency_id',
+        'amount_last_payment'
     ];
 
     public function legalCase()

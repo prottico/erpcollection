@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('default_interest_rate')->nullable();
             $table->string('interest_owed')->nullable();
             $table->date('last_payment_day')->nullable();
-            $table->string('currency')->nullable();
             $table->string('base_execution_document')->nullable();
             $table->string('path_base_execution_document')->nullable();
             $table->string('description')->nullable();
@@ -29,6 +28,7 @@ return new class extends Migration
             $table->string('cost')->nullable();
             $table->string('code')->nullable();
             $table->string('lawyer_commet')->nullable();
+            $table->string('amount_last_payment')->nullable();
             $table->string('token')->nullable();
             $table->timestamps();
         });

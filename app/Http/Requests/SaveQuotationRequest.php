@@ -42,7 +42,8 @@ class SaveQuotationRequest extends FormRequest
                 })
             ],
             'comments' => 'nullable|string',
-            'credit_due_date'
+            'credit_due_date' => 'required',
+            'amount_last_payment' => 'required'
         ];
     }
 }

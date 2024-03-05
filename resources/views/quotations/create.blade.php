@@ -18,6 +18,28 @@
 
             <form class="row g-3" method="POST" action="{{route('quotations.store')}}" enctype="multipart/form-data">
                 @csrf @method('PATCH')
+
+                <div class="col-md-12">
+                    <label for="tipo_pago" class="mb-2"><strong>Tipo de Cobro</strong></label> <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio1" value="1">
+                        <label class="form-check-label" for="inlineRadio1">Cobro Judicial</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio2" value="2">
+                        <label class="form-check-label" for="inlineRadio2">Cobro Extrajudicial</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio3" value="2">
+                        <label class="form-check-label" for="inlineRadio2">Estudio de Factibilidad</label>
+                    </div>
+
+                    @error('type_payment_id')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+
+                </div>
+
                 <div class="col-md-4">
                     <label for="creditStartDate"
                         class="form-label @error('credit_start_date') text-danger fw-bold @enderror"><strong>Fecha de
@@ -162,7 +184,7 @@
                     @enderror
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="lastPaymentDay"
                         class="form-label @error('last_payment_day') text-danger fw-bold @enderror"><strong>Dia del
                             último
@@ -184,7 +206,29 @@
                     @enderror
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <label for="amountLastPayment"
+                        class="form-label @error('amount_last_payment') text-danger fw-bold @enderror"><strong>Monto del
+                            último
+                            pago</strong></label>
+                    <div class="input-group @error('amount_last_payment') text-danger @enderror">
+                        <span class="input-group-text @error('amount_last_payment') border border-danger @enderror">
+                            <i class="bi bi-calendar-date @error('amount_last_payment') text-danger @enderror"></i>
+                        </span>
+                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago"
+                            class="form-control @error('amount_last_payment') is-invalid @enderror"
+                            name="amount_last_payment" value="{{old('amount_last_payment')}}">
+                    </div>
+
+                    @error('amount_last_payment')
+                    <div class="text-danger p-2 mt-1 rounded">
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-4">
                     <label for="currency_id"
                         class="form-label @error('currency_id') text-danger fw-bold @enderror"><strong>Moneda</strong></label>
                     <div class="input-group @error('currency_id') text-danger @enderror">
@@ -198,7 +242,8 @@
                             class="form-select @error('currency_id') border border-danger @enderror" id="">
                             <option value="">Seleccione</option>
                             @foreach($currencies as $currency)
-                            <option value="{{ $currency->id}}" {{ old('currency_id')==$currency->id ? 'selected' : '' }}>
+                            <option value="{{ $currency->id}}" {{ old('currency_id')==$currency->id ? 'selected' : ''
+                                }}>
                                 {{ $currency->name }}
                             </option>
                             @endforeach
@@ -257,22 +302,6 @@
                         {{ $message }}
                     </div>
                     @enderror
-                </div>
-                <div class="col-md-12">
-                    <label for="tipo_pago" class="mb-2"><strong>Tipo de Cobro</strong></label> <br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio1" value="1">
-                        <label class="form-check-label" for="inlineRadio1">Cobro Judicial</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio2" value="2">
-                        <label class="form-check-label" for="inlineRadio2">Cobro Extrajudicial</label>
-                    </div>
-
-                    @error('type_payment_id')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-
                 </div>
                 <div class="col-md-12">
                     <label for="comments"

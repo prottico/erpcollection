@@ -177,7 +177,7 @@
                         </span>
                         <input id="currency" type="text" placeholder="Moneda" readonly
                             class="form-control @error('currency') is-invalid @enderror" name="currency"
-                            value="{{old('currency', $quotation->currency)}}">
+                            value="{{$currency->name}}">
                     </div>
 
                     @error('currency')
