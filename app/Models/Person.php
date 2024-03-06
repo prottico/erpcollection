@@ -21,6 +21,7 @@ class Person extends Model
         'comercial_name',
         'user_id',
         'identity_type_id',
+        'company_id',
         'token'
     ];
 

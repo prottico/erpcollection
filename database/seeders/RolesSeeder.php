@@ -18,7 +18,8 @@ class RolesSeeder extends Seeder
             ['name' => 'general-admin', 'guard_name' => 'web', 'label' => 'Administrador'],
             ['name' => 'independent-client', 'guard_name' => 'web', 'label' => 'Cliente Independiente'],
             ['name' => 'company-client', 'guard_name' => 'web', 'label' => 'Cliente Compañía'],
-            ['name' => 'lawyer', 'guard_name' => 'web', 'label' => 'Abogado']
+            ['name' => 'lawyer', 'guard_name' => 'web', 'label' => 'Abogado'],
+            ['name' => 'employee', 'guard_name' => 'web', 'label' => 'Abogado']
         ];
 
         // Crear un registro para cada rol

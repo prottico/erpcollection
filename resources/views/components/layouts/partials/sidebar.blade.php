@@ -8,7 +8,16 @@
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
+
+        @role('company-client')
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('clients.company.users.index')}}">
+                <i class="bi bi-file-person"></i>
+                <span>Usuarios</span>
+            </a>
+        </li>
+        @endrole
 
         @role('general-admin')
         <li class="nav-item">
@@ -16,7 +25,7 @@
                 <i class="bi bi-people"></i>
                 <span>Abogados</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
@@ -34,7 +43,7 @@
                     </a>
                 </li>
             </ul>
-        </li><!-- End Icons Nav -->
+        </li>
         @endrole
 
         @role('general-admin')
@@ -49,7 +58,7 @@
 
         @endrole
 
-        @role('independent-client')
+        @role('independent-client|company-client')
         <li class="nav-heading">Cotizaciones</li>
 
         <li class="nav-item">

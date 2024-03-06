@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             // Independent client
-            // $table->string('physical_client')->nullable();
             $table->string('identification')->nullable();
             $table->string('name')->nullable();
             $table->string('lastname')->nullable();
@@ -22,12 +21,13 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('associated_company')->nullable();
             // Company client
-            // $table->enum('identity_type', ['national', 'foreigner'])->nullable();
             $table->string('comercial_name')->nullable();
 
             // Relation with User
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('people')->onDelete('cascade');
             $table->string('token')->nullable();
 
             $table->timestamps();

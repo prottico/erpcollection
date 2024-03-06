@@ -11,7 +11,7 @@ class ClientsQuotationsController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index(Request $request)
+    public function index(Request $request)
     {
         $client = $request->user()->person->client->id;
         $data = Quotation::where('client_id', $client)->get();
