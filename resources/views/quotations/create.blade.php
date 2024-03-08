@@ -186,7 +186,7 @@
                 </div>
 
 
-                <div class="col-md-8">
+                {{-- <div class="col-md-8">
                     <label for="lastPaymentDay"
                         class="form-label @error('last_payment_day') text-danger fw-bold @enderror"><strong>Dia del
                             último
@@ -195,9 +195,9 @@
                         <span class="input-group-text @error('last_payment_day') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('last_payment_day') text-danger @enderror"></i>
                         </span>
-                        {{-- <input id="lastPaymentDay" type="date"
+                        <input id="lastPaymentDay" type="date"
                             class="form-control @error('last_payment_day') is-invalid @enderror" name="last_payment_day"
-                            value="{{old('last_payment_day')}}"> --}}
+                            value="{{old('last_payment_day')}}">
                         <!-- ... -->
 
                         <input id="lastPaymentDay" type="date" class="form-control" name="last_payment_day"
@@ -213,13 +213,13 @@
                         {{ $message }}
                     </div>
                     @enderror
-                </div>
+                </div> --}}
 
-                <div class="col-md-4 d-flex justify-content-center align-items-center">
-                    {{-- <div class="form-check form-check-inline">
+                {{-- <div class="col-md-4 d-flex justify-content-center align-items-center">
+                    <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="noApply" id="" value="1">
                         <label class="form-check-label" for="inlineRadio4"><strong>No aplica</strong></label>
-                    </div> --}}
+                    </div>
 
                     <div class="form-check mt-4">
                         <input class="form-check-input" name="noApply" type="checkbox" value="1" id="flexCheckDefault"
@@ -235,7 +235,65 @@
                         {{ $message }}
                     </div>
                     @enderror
-                </div>
+                </div> --}}
+
+                <div class="col-md-8">
+                  <label for="lastPaymentDay" class="form-label @error('last_payment_day') text-danger fw-bold @enderror">
+                      <strong>Dia del último pago</strong>
+                  </label>
+                  <div class="input-group @error('last_payment_day') text-danger @enderror">
+                      <span class="input-group-text @error('last_payment_day') border border-danger @enderror">
+                          <i class="bi bi-calendar-date @error('last_payment_day') text-danger @enderror"></i>
+                      </span>
+                      <input id="lastPaymentDay" type="date" class="form-control" name="last_payment_day"
+                          value="{{ old('last_payment_day') }}" {{ old('noApply') ? 'readonly' : '' }}>
+                  </div>
+              
+                  @error('last_payment_day')
+                  <div class="text-danger p-2 mt-1 rounded">
+                      <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                      {{ $message }}
+                  </div>
+                  @enderror
+              </div>
+              
+              <div class="col-md-4 d-flex justify-content-center align-items-center">
+                  <div class="form-check mt-4">
+                      <input class="form-check-input" name="noApply" type="checkbox" value="1" id="flexCheckDefault"
+                          {{ old('noApply', 0)==1 ? 'checked' : '' }}>
+                      <label class="form-check-label" for="flexCheckDefault">
+                          <strong>No aplica (Dia del último pago)</strong>
+                      </label>
+                  </div>
+              
+                  @error('noApply')
+                  <div class="text-danger p-2 mt-1 rounded">
+                      <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                      {{ $message }}
+                  </div>
+                  @enderror
+              </div>
+              
+              <script>
+                  const checkbox = document.getElementById('flexCheckDefault');
+                  const dateInput = document.getElementById('lastPaymentDay');
+              
+                  checkbox.addEventListener('change', function() {
+                      if (this.checked) {
+                          dateInput.disabled = true;
+                      } else {
+                          dateInput.disabled = false;
+                      }
+                  });
+              
+                  dateInput.addEventListener('input', function() {
+                      if (this.value) {
+                          checkbox.disabled = true;
+                      } else {
+                          checkbox.disabled = false;
+                      }
+                  });
+              </script>
 
                 <div class="col-md-6">
                     <label for="amountLastPayment"

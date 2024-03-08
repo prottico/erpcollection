@@ -42,8 +42,8 @@ class SaveQuotationRequest extends FormRequest
             'comments' => 'nullable|string',
             'credit_due_date' => 'required',
             'amount_last_payment' => 'required',
-            'last_payment_day' => $this->exists('no_apply_last_payment_day') ? 'nullable' : 'required',
-            'no_apply_last_payment_day' => $this->exists('last_payment_day') ? 'nullable' : 'required'
+            'last_payment_day' => 'nullable',
+            'no_apply_last_payment_day' => 'nullable'
         ];
     }
 }
