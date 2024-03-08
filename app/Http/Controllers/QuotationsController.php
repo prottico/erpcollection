@@ -10,9 +10,12 @@ use App\Models\Quotation;
 use App\Models\TypeCase;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use RuntimeException;
 
 use function Laravel\Prompts\error;
 
@@ -39,44 +42,87 @@ class QuotationsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SaveQuotationRequest $request)
+
+    public function store(SaveQuotationRequest $request): RedirectResponse
     {
         try {
-            $validateData = $request->validated();
-            $path = '';
-            $count = Quotation::count() + 1;
+            $validatedData = $request->validated();
+            $path = $this->saveBaseExecutionDocumentIfExists($request);
+            $validatedData = $this->setAdditionalProperties($validatedData, $request, $path);
 
-            if ($request->hasFile('base_execution_document')) {
-                $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
-                // foreach ($request->file('base_execution_document') as $file) {
-                //     $file->store('public');
-                // }
-            }
+            // dd($validatedData);
 
-            $validateData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
-            $validateData['path_base_execution_document'] = $path;
-            $validateData['client_id'] = strval($request->user()->person->client->id);
-            $validateData['credit_start_date'] = Carbon::parse($request->input('credit_start_date'));
-            $validateData['last_payment_day'] = Carbon::parse($request->input('last_payment_day'));
-            $validateData['token'] = $this->getFakerToken();
-            $validateData['code'] = 'C-' . str_pad($count, 9, '0', STR_PAD_LEFT);
-            Quotation::create($validateData);
+            Quotation::create($validatedData);
 
-            if (Auth::check()) {
-                /** @var \App\Models\User $user */
-                $user = Auth::user();
-                if ($user->hasRole('independent-client')) {
-                    return redirect()->route('clients.quotations.index')->with('success', 'Cotización registrada correctamente!');
-                } else {
-                    return redirect()->route('quotations.index')->with('success', 'Cotización registrada correctamente!');
-                }
-            }
-        } catch (\Throwable $th) {
-            Log::error(['Message' => $th->getMessage()]);
-            return redirect()->route('quotations.index')->with('error', '¡Ha ocurrido un error inesperado!');
+            return $this->redirectBasedOnUserRole($request);
+        } catch (\Throwable $exception) {
+            Log::error(['Message' => $exception->getMessage()]);
+            return back()->with('error', '¡Ha ocurrido un error inesperado!');
         }
     }
 
+    private function saveBaseExecutionDocumentIfExists(SaveQuotationRequest $request): string|null
+    {
+
+        //         if ($request->hasFile('base_execution_document')) {
+        //             $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
+        //             // foreach ($request->file('base_execution_document') as $file) {
+        //             //     $file->store('public');
+        //             // }
+        //         }
+
+        if (!$request->hasFile('base_execution_document')) {
+            return null;
+        }
+
+        $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
+        $validatedData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
+        $validatedData['path_base_execution_document'] = $path;
+
+        return $path;
+    }
+
+    private function setAdditionalProperties(&$validatedData, SaveQuotationRequest $request, ?string $path): array
+    {
+        $validatedData['client_id'] = Str::of($request->user()->person->client->id)->toString();
+        $validatedData['credit_start_date'] = Carbon::parse($request->input('credit_start_date'));
+
+        if (!$request->input('noApply')) {
+            $validateData['last_payment_day'] = Carbon::parse($request->input('last_payment_day'));
+        } else {
+            $validateData['last_payment_day'] = '';
+        }
+
+        $validatedData['last_payment_day'] = !empty($request->input('no_apply_last_payment_day')) ? '' : Carbon::parse($request->input('last_payment_day'));
+        $validatedData['token'] = $this->getFakerToken();
+        $validatedData['code'] = $this->generateCodeBasedOnTypePaymentId($validatedData['type_payment_id']);
+
+        return $validatedData;
+    }
+
+    private function generateCodeBasedOnTypePaymentId(int $typePaymentId): string
+    {
+        switch ($typePaymentId) {
+            case 1:
+                return 'CJ-' . str_pad(Quotation::count() + 1, 9, '0', STR_PAD_LEFT);
+            case 2:
+                return 'CEJ-' . str_pad(Quotation::count() + 1, 9, '0', STR_PAD_LEFT);
+            default:
+                return 'EF-' . str_pad(Quotation::count() + 1, 9, '0', STR_PAD_LEFT);
+        }
+    }
+
+    private function redirectBasedOnUserRole(SaveQuotationRequest $request): RedirectResponse
+    {
+        if (auth()->check()) {
+            /** @var \App\Models\User $user */
+            $user = auth()->user();
+            return $user->hasRole('independent-client')
+                ? redirect()->route('clients.quotations.index')->with('success', 'Cotización registrada correctamente!')
+                : redirect()->route('quotations.index')->with('success', 'Cotización registrada correctamente!');
+        }
+        throw new RuntimeException('Usuario autenticado no encontrado.');
+    }
 
     /**
      * Display the specified resource.
@@ -89,7 +135,7 @@ class QuotationsController extends Controller
             $lawyers = User::where('type_user_id', 3)->whereHas('person')->with(['person'])->get();
             $typeCases = TypeCase::all();
             $currency = Currency::find($quotation->currency_id);
-            
+
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
                 $user = Auth::user();

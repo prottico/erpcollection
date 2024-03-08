@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->string('lawyer_commet')->nullable();
             $table->string('amount_last_payment')->nullable();
+            $table->string('no_apply_last_payment_day')->nullable();
             $table->string('token')->nullable();
             $table->timestamps();
         });

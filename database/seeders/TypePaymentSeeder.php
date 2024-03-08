@@ -13,7 +13,7 @@ class TypePaymentSeeder extends Seeder
      */
     public function run(): void
     {
-        $types = ['Judicial', 'Extrajudicial'];
+        $types = ['Judicial', 'Extrajudicial', 'Estudio de Factibilidad'];
 
         foreach ($types as $type) {
             TypePayment::updateOrCreate(['name' => $type]);

@@ -30,20 +30,20 @@ class SaveQuotationRequest extends FormRequest
             'current_interest_rate' => 'required|numeric',
             'default_interest_rate' => 'required|numeric',
             'interest_owed' => 'required|numeric',
-            'last_payment_day' => 'required|date',
             'currency_id' => 'required',
             'base_execution_document' => 'required|file|mimes:pdf,doc,docx|max:10240',
-            //'base_execution_document.*' => 'required|file|mimes:pdf,doc,docx|max:10240', // Máximo 10MB por archivo y permite PDF, DOC y DOCX
             'description' => 'required|string',
             'type_payment_id' => [
                 'required',
                 Rule::requiredIf(function () {
                     return empty($this->input('type_payment_id'));
-                })
+                }),
             ],
             'comments' => 'nullable|string',
             'credit_due_date' => 'required',
-            'amount_last_payment' => 'required'
+            'amount_last_payment' => 'required',
+            'last_payment_day' => $this->exists('no_apply_last_payment_day') ? 'nullable' : 'required',
+            'no_apply_last_payment_day' => $this->exists('last_payment_day') ? 'nullable' : 'required'
         ];
     }
 }
