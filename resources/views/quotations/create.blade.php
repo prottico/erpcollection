@@ -246,7 +246,7 @@
                           <i class="bi bi-calendar-date @error('last_payment_day') text-danger @enderror"></i>
                       </span>
                       <input id="lastPaymentDay" type="date" class="form-control" name="last_payment_day"
-                          value="{{ old('last_payment_day') }}" {{ old('noApply') ? 'readonly' : '' }}>
+                          value="{{ old('last_payment_day') }}" {{ old('no_apply_last_payment_day') ? 'readonly' : '' }}>
                   </div>
               
                   @error('last_payment_day')
@@ -259,14 +259,14 @@
               
               <div class="col-md-4 d-flex justify-content-center align-items-center">
                   <div class="form-check mt-4">
-                      <input class="form-check-input" name="noApply" type="checkbox" value="1" id="flexCheckDefault"
-                          {{ old('noApply', 0)==1 ? 'checked' : '' }}>
+                      <input class="form-check-input" name="no_apply_last_payment_day" type="checkbox" value="1" id="flexCheckDefault"
+                          {{ old('no_apply_last_payment_day', 0)==1 ? 'checked' : '' }}>
                       <label class="form-check-label" for="flexCheckDefault">
                           <strong>No aplica (Dia del último pago)</strong>
                       </label>
                   </div>
               
-                  @error('noApply')
+                  @error('no_apply_last_payment_day')
                   <div class="text-danger p-2 mt-1 rounded">
                       <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                       {{ $message }}

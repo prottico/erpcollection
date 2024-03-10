@@ -47,10 +47,16 @@ class QuotationsController extends Controller
     {
         try {
             $validatedData = $request->validated();
-            $path = $this->saveBaseExecutionDocumentIfExists($request);
-            $validatedData = $this->setAdditionalProperties($validatedData, $request, $path);
+            // $this->saveBaseExecutionDocumentIfExists($request);
+            if (!$request->hasFile('base_execution_document')) {
+                return null;
+            }
+    
+            $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
+            $validatedData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
+            $validatedData['path_base_execution_document'] = $path;
 
-            // dd($validatedData);
+            $validatedData = $this->setAdditionalProperties($validatedData, $request);
 
             Quotation::create($validatedData);
 
@@ -61,39 +67,32 @@ class QuotationsController extends Controller
         }
     }
 
-    private function saveBaseExecutionDocumentIfExists(SaveQuotationRequest $request): string|null
-    {
+    // private function saveBaseExecutionDocumentIfExists(SaveQuotationRequest $request): string|null
+    // {
 
-        //         if ($request->hasFile('base_execution_document')) {
-        //             $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
-        //             // foreach ($request->file('base_execution_document') as $file) {
-        //             //     $file->store('public');
-        //             // }
-        //         }
+    //     //         if ($request->hasFile('base_execution_document')) {
+    //     //             $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
+    //     //             // foreach ($request->file('base_execution_document') as $file) {
+    //     //             //     $file->store('public');
+    //     //             // }
+    //     //         }
 
-        if (!$request->hasFile('base_execution_document')) {
-            return null;
-        }
+    //     if (!$request->hasFile('base_execution_document')) {
+    //         return null;
+    //     }
 
-        $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
-        $validatedData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
-        $validatedData['path_base_execution_document'] = $path;
+    //     $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
+    //     $validatedData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
+    //     $validatedData['path_base_execution_document'] = $path;
 
-        return $path;
-    }
+    //     // return $path;
+    // }
 
-    private function setAdditionalProperties(&$validatedData, SaveQuotationRequest $request, ?string $path): array
+    private function setAdditionalProperties(&$validatedData, SaveQuotationRequest $request): array
     {
         $validatedData['client_id'] = Str::of($request->user()->person->client->id)->toString();
         $validatedData['credit_start_date'] = Carbon::parse($request->input('credit_start_date'));
-
-        if (!$request->input('noApply')) {
-            $validateData['last_payment_day'] = Carbon::parse($request->input('last_payment_day'));
-        } else {
-            $validateData['last_payment_day'] = '';
-        }
-
-        $validatedData['last_payment_day'] = !empty($request->input('no_apply_last_payment_day')) ? '' : Carbon::parse($request->input('last_payment_day'));
+        $validatedData['last_payment_day'] = $request->input('no_apply_last_payment_day') ? null : Carbon::parse($request->input('last_payment_day'));
         $validatedData['token'] = $this->getFakerToken();
         $validatedData['code'] = $this->generateCodeBasedOnTypePaymentId($validatedData['type_payment_id']);
 
