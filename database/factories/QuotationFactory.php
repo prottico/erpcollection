@@ -47,7 +47,7 @@ class QuotationFactory extends Factory
             'client_id' => $this->faker->randomElement($clientsIds),
             'type_case_id' => $this->faker->randomElement($typeCasesIds),
             'type_payment_id' => $this->faker->randomElement($typePaymentIds),
-            'lawyer_commet' => $this->faker->text(15),
+            // 'lawyer_commet' => $this->faker->text(15),
             'token' => $this->faker->sha256,
             'currency_id' => $this->faker->randomElement($currencyIds)
         ];

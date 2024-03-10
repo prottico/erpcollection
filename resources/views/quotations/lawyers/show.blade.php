@@ -303,18 +303,18 @@
                 <div class="border-top border-4 mt-4"></div>
 
                 <div class="col-md-6">
-                    <label for="cost"
-                        class="form-label @error('cost') text-danger fw-bold @enderror"><strong>Costo</strong></label>
-                    <div class="input-group @error('cost') text-danger @enderror">
-                        <span class="input-group-text @error('cost') border border-danger @enderror">
-                            <i class="ri ri-exchange-dollar-line @error('cost') text-danger @enderror"></i>
+                    <label for="iva"
+                        class="form-label @error('iva') text-danger fw-bold @enderror"><strong>IVA</strong></label>
+                    <div class="input-group @error('iva') text-danger @enderror">
+                        <span class="input-group-text @error('iva') border border-danger @enderror">
+                            <i class="ri ri-exchange-dollar-line @error('iva') text-danger @enderror"></i>
                         </span>
-                        <input id="cost" type="text" placeholder="Determina el costo"
-                            class="form-control @error('cost') is-invalid @enderror" name="cost"
-                            value="{{ old('cost', $quotation->cost) }}">
+                        <input id="iva" type="text" placeholder="Determina el iva"
+                            class="form-control @error('iva') is-invalid @enderror" name="iva"
+                            value="{{ old('iva', $quotation->budget ? $quotation->budget->iva : '') }}">
                     </div>
 
-                    @error('cost')
+                    @error('iva')
                         <div class="text-danger p-2 mt-1 rounded">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                             {{ $message }}
@@ -351,20 +351,60 @@
                     @enderror
                 </div>
 
-                <div class="col-md-12">
-                    <label for="lawyer_commet"
-                        class="form-label @error('lawyer_commet') text-danger fw-bold @enderror"><strong>Dejar un
-                            comentario al cliente</strong></label>
-                    <div class="input-group @error('lawyer_commet') text-danger @enderror">
-                        <span class="input-group-text @error('lawyer_commet') border border-danger @enderror">
-                            <i class="ri ri-chat-1-fill @error('lawyer_commet') text-danger @enderror"></i>
+                <div class="col-md-6">
+                    <label for="subtotal"
+                        class="form-label @error('subtotal') text-danger fw-bold @enderror"><strong>Subtotal</strong></label>
+                    <div class="input-group @error('subtotal') text-danger @enderror">
+                        <span class="input-group-text @error('subtotal') border border-danger @enderror">
+                            <i class="ri ri-exchange-dollar-line @error('subtotal') text-danger @enderror"></i>
                         </span>
-                        <input id="lawyer_commet" type="text" placeholder="Dejarle un comentario al cliente"
-                            class="form-control @error('lawyer_commet') is-invalid @enderror" name="lawyer_commet"
-                            value="{{ old('lawyer_commet', $quotation->lawyer_commet) }}">
+                        <input id="subtotal" type="text" placeholder="Determina el subtotal"
+                            class="form-control @error('subtotal') is-invalid @enderror" name="subtotal"
+                            value="{{ old('subtotal', $quotation->budget ? $quotation->budget->subtotal : '') }}">
                     </div>
 
-                    @error('lawyer_commet')
+                    @error('subtotal')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="total"
+                        class="form-label @error('total') text-danger fw-bold @enderror"><strong>Total</strong></label>
+                    <div class="input-group @error('total') text-danger @enderror">
+                        <span class="input-group-text @error('total') border border-danger @enderror">
+                            <i class="ri ri-exchange-dollar-line @error('total') text-danger @enderror"></i>
+                        </span>
+                        <input id="total" type="text" placeholder="Determina el total"
+                            class="form-control @error('total') is-invalid @enderror" name="total"
+                            value="{{ old('total', $quotation->budget ? $quotation->budget->total : '') }}">
+                    </div>
+
+                    @error('total')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+
+                <div class="col-md-12">
+                    <label for="comment"
+                        class="form-label @error('comment') text-danger fw-bold @enderror"><strong>Dejar un
+                            comentario al cliente</strong></label>
+                    <div class="input-group @error('comment') text-danger @enderror">
+                        <span class="input-group-text @error('comment') border border-danger @enderror">
+                            <i class="ri ri-chat-1-fill @error('comment') text-danger @enderror"></i>
+                        </span>
+                        <input id="comment" type="text" placeholder="Dejarle un comentario al cliente"
+                            class="form-control @error('comment') is-invalid @enderror" name="comment"
+                            value="{{ old('comment', $quotation->budget ? $quotation->budget->comment : '') }}">
+                    </div>
+
+                    @error('comment')
                         <div class="text-danger p-2 mt-1 rounded">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                             {{ $message }}

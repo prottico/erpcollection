@@ -44,7 +44,8 @@ class Quotation extends Model
         'credit_due_date',
         'currency_id',
         'amount_last_payment',
-        'no_apply_last_payment_day'
+        'no_apply_last_payment_day',
+        'budget_id'
     ];
 
     public function legalCase()
@@ -75,5 +76,10 @@ class Quotation extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function budget()
+    {
+        return $this->hasOne(Budget::class);
     }
 }

@@ -51,7 +51,7 @@ class QuotationsController extends Controller
             if (!$request->hasFile('base_execution_document')) {
                 return null;
             }
-    
+
             $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
             $validatedData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
             $validatedData['path_base_execution_document'] = $path;
@@ -164,8 +164,21 @@ class QuotationsController extends Controller
     public function update(SaveLawyerQuotationRequest $request, string $token)
     {
         try {
-            $quotation = Quotation::where('token', $token)->first();
-            $quotation->update($request->validated());
+            $validatedData = $request->validated();
+            $quotation = Quotation::where('token', $token)->with('budget')->first();
+
+            $budgetData =  array_merge(array_diff_key($validatedData, ['type_case_id' => null]));
+            $budgetData['quotation_id'] = $quotation->id;
+
+            if (!$quotation->budget) {
+                $quotation->budget()->create($budgetData);
+            } else {
+                $quotation->budget->fill($budgetData);
+                $quotation->budget->save();
+            }
+            
+            $quotation->update($validatedData);
+
             return redirect()->route('lawyers.quotations.index')->with('success', 'Registro actualizado correctamente');
         } catch (\Throwable $th) {
             Log::error([

@@ -25,9 +25,9 @@ return new class extends Migration
             $table->string('path_base_execution_document')->nullable();
             $table->string('description')->nullable();
             $table->string('comments')->nullable();
-            $table->string('cost')->nullable();
+            // $table->string('cost')->nullable();
             $table->string('code')->nullable();
-            $table->string('lawyer_commet')->nullable();
+            // $table->string('lawyer_commet')->nullable();
             $table->string('amount_last_payment')->nullable();
             $table->string('no_apply_last_payment_day')->nullable();
             $table->string('token')->nullable();
