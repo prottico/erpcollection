@@ -239,7 +239,7 @@
                         <span class="input-group-text @error('amount_last_payment') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('amount_last_payment') text-danger @enderror"></i>
                         </span>
-                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago" readonly
+                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago"
                             class="form-control @error('amount_last_payment') is-invalid @enderror"
                             name="amount_last_payment" value="{{ $quotation->amount_last_payment }}">
                     </div>
