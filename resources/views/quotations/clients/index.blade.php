@@ -16,7 +16,7 @@
         <div class="col-md-12">
 
             @foreach ($data as $item)
-                @if ($item->lawyer && $item->cost)
+                @if ($item->lawyer)
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Felicidades!</strong> La Cotizacion de Código <strong>{{$item->code}}</strong> ha sido
                     procesada por un

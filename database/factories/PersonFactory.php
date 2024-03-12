@@ -28,7 +28,7 @@ class PersonFactory extends Factory
             'phone' => $this->faker->e164PhoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'associated_company' => $this->faker->company(),
-            'comercial_name' => $this->faker->company(),
+            // 'comercial_name' => $this->faker->company(),
             'identity_type_id' => $this->faker->randomElement($identityTypes),
             'user_id' =>  $this->faker->randomElement($userIds),
             'token' => $this->faker->sha256

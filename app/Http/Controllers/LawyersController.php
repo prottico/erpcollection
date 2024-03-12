@@ -17,7 +17,8 @@ class LawyersController extends Controller
      */
     public function index(User $users)
     {
-        $data = User::where('type_user_id', 3)->whereHas('person')->with(['person', 'person.client'])->get();
+        $data = User::where('type_user_id', 3)->with(['person'])->get();
+        // dd($data);
         return view('lawyers.index', compact('data'));
     }
 
@@ -44,7 +45,7 @@ class LawyersController extends Controller
 
             if (User::where('email', $validatedData['email'])->exists()) {
                 return redirect()->route('lawyers.create')
-                ->with('error', 'El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.');
+                    ->with('error', 'El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.');
             } else {
 
                 $user = User::create($validatedData);

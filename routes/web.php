@@ -57,6 +57,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/clientes/empresas', [CompanyClientController::class, 'index'])->name('company.client.index');
         Route::get('/clientes/empresas/nuevo', [CompanyClientController::class, 'create'])->name('company.client.create');
         Route::patch('/clientes/empresas/nuevo', [CompanyClientController::class, 'store'])->name('company.client.store');
+        Route::get('/cliente/empresa/{token}', [CompanyClientController::class, 'show'])->name('company.client.show');
+        Route::patch('/cliente/empresa/{client}', [CompanyClientController::class, 'update'])->name('company.client.update');
+        Route::delete('/cliente/empresa/{id}', [CompanyClientController::class, 'destroy'])->name('company.client.destroy');
 
         Route::get('/cotizaciones', [QuotationsController::class, 'index'])->name('quotations.index');
         Route::post('/asignar-abogado', [QuotationsController::class, 'assignLawyer'])->name('quotations.assign.lawyer');

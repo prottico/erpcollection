@@ -130,7 +130,7 @@ class QuotationsController extends Controller
     {
         try {
             $view = '';
-            $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase'])->first();
+            $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase', 'budget'])->first();
             $lawyers = User::where('type_user_id', 3)->whereHas('person')->with(['person'])->get();
             $typeCases = TypeCase::all();
             $currency = Currency::find($quotation->currency_id);
@@ -176,7 +176,7 @@ class QuotationsController extends Controller
                 $quotation->budget->fill($budgetData);
                 $quotation->budget->save();
             }
-            
+
             $quotation->update($validatedData);
 
             return redirect()->route('lawyers.quotations.index')->with('success', 'Registro actualizado correctamente');

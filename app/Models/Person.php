@@ -22,7 +22,8 @@ class Person extends Model
         'user_id',
         'identity_type_id',
         'company_id',
-        'token'
+        'token',
+        'responsible'
     ];
 
     public function user()
@@ -43,5 +44,10 @@ class Person extends Model
     public function quotations()
     {
         return $this->hasMany(Quotation::class, 'lawyer_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(company::class);
     }
 }

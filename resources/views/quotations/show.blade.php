@@ -381,33 +381,6 @@
                     }
                 </style>
 
-                {{-- <div class="col-md-12">
-                    <label for="comments"
-                        class="form-label @error('comments') text-danger fw-bold @enderror">Comentarios</label>
-                    <div class="input-group @error('comments') text-danger @enderror">
-                        <span class="input-group-text @error('comments') border border-danger @enderror">
-                            <i class="bi bi-person @error('comments') text-danger @enderror"></i>
-                        </span>
-                        <input id="comments" type="file" class="form-control @error('comments') is-invalid @enderror"
-                            name="comments" value="{{old('comments')}}">
-                        <textarea placeholder="Agregue una breve descripción del caso..." name="comments"
-                            class="form-control txt @error('comments') is-invalid @enderror"
-                            id="exampleFormControlTextarea1" rows="2">
-                            {{old('description', $quotation->comments) }}
-                        </textarea>
-                        <script>
-                            $('.txt').autogrow({vertical: true, horizontal: false});
-                        </script>
-                    </div>
-
-                    @error('comments')
-                    <div class="text-danger p-2 mt-1 rounded">
-                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div> --}}
-
                 <div class="col-md-12">
                     <label for="comments"
                         class="form-label @error('comments') text-danger fw-bold @enderror"><strong>Comentarios</strong></label>
@@ -429,15 +402,16 @@
                 </div>
 
                 @role('independent-client')
-                    @if ($quotation->cost && $quotation->typeCase && $quotation->typeCase->name)
+                    @if ($quotation->budget && $quotation->typeCase && $quotation->typeCase->name)
+                        <div class="border-top border-4 mt-4"></div>
                         <div class="col-md-6">
-                            <label for="cost" class="form-label "><strong>Costo</strong></label>
+                            <label for="cost" class="form-label "><strong>IVA</strong></label>
                             <div class="input-group ">
                                 <span class="input-group-text">
                                     <i class="ri ri-exchange-dollar-line "></i>
                                 </span>
                                 <input id="cost" type="text" placeholder="Determina el costo" readonly
-                                    class="form-control" name="cost" value="{{ old('cost', $quotation->cost) }}">
+                                    class="form-control" name="cost" value="{{ $quotation->budget->iva }}">
                             </div>
                         </div>
 
@@ -453,6 +427,40 @@
                             </div>
                         </div>
 
+
+                        <div class="col-md-6">
+                            <label for="subtotal"
+                                class="form-label @error('subtotal') text-danger fw-bold @enderror"><strong>Subtotal</strong></label>
+                            <div class="input-group @error('subtotal') text-danger @enderror">
+                                <span class="input-group-text @error('subtotal') border border-danger @enderror">
+                                    <i class="ri ri-exchange-dollar-line @error('subtotal') text-danger @enderror"></i>
+                                </span>
+                                <input id="subtotal" type="text" placeholder="Determina el subtotal"
+                                    class="form-control @error('subtotal') is-invalid @enderror" name="subtotal"
+                                    value="{{ $quotation->budget ? $quotation->budget->subtotal : '' }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="total"
+                                class="form-label @error('total') text-danger fw-bold @enderror"><strong>Total</strong></label>
+                            <div class="input-group @error('total') text-danger @enderror">
+                                <span class="input-group-text @error('total') border border-danger @enderror">
+                                    <i class="ri ri-exchange-dollar-line @error('total') text-danger @enderror"></i>
+                                </span>
+                                <input id="total" type="text" placeholder="Determina el total"
+                                    class="form-control @error('total') is-invalid @enderror" name="total"
+                                    value="{{ $quotation->budget ? $quotation->budget->total : '' }}">
+                            </div>
+
+                            @error('total')
+                                <div class="text-danger p-2 mt-1 rounded">
+                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
                         <div class="col-md-12">
                             <label for="lawyer_commet" class="form-label"><strong>Comentario del Abogado
                                     asignado</strong></label>
@@ -462,7 +470,7 @@
                                 </span>
                                 <input id="lawyer_commet" type="text" placeholder="Dejarle un comentario al cliente"
                                     readonly class="form-control" name="lawyer_commet"
-                                    value="{{ $quotation->lawyer_commet }}">
+                                    value="{{ $quotation->budget->comment }}">
                             </div>
                         </div>
                     @endif
@@ -485,7 +493,7 @@
 
                 <div class="text-end">
                     @role('independent-client')
-                        @if ($quotation->cost && $quotation->typeCase && $quotation->typeCase->name)
+                        @if ($quotation->budget && $quotation->typeCase && $quotation->typeCase->name)
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" disabled
                                 data-bs-target="#modalAssignLawyer" id="modalReferenceTarget">
                                 <i class="bi bi-check"></i>

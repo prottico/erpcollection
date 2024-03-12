@@ -7,16 +7,18 @@
                 <li class="breadcrumb-item">
                     <a href="{{ route('company.client.index') }}">Empresas</a>
                 </li>
-                <li class="breadcrumb-item active">Nuevo</li>
+                <li class="breadcrumb-item active">
+                    {{ $client->comercial_name ? $client->comercial_name : $client->name }} </li>
             </ol>
         </nav>
     </div>
 
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Registro de Cliente Empresa</h5>
+            <h5 class="card-title">Detalle de Cliente
+                {{ $client->comercial_name ? $client->comercial_name : $client->name }}</h5>
 
-            <form class="row g-3" method="POST" action="{{ route('company.client.store') }}">
+            <form class="row g-3" method="POST" action="{{ route('company.client.update', $client) }}">
                 @csrf @method('PATCH')
                 <div class="col-md-4">
                     <label for="physicalClient"
@@ -31,10 +33,12 @@
                             class="form-select @error('identity_type_id') border border-danger @enderror"
                             id="">
                             <option value="">Seleccione</option>
-                            @foreach ($identityTypes as $it)
-                                <option value="{{ $it->id }}"
-                                    {{ old('identity_type_id') == $it->id ? 'selected' : '' }}>
-                                    {{ $it->name }}
+                            @foreach ($identityTypes as $identityType)
+                                <option value="{{ $identityType->id }}"
+                                    {{ old('identity_type_id', $client->person ? $client->identity_type_id : null) == $identityType->id
+                                        ? 'selected'
+                                        : '' }}>
+                                    {{ $identityType->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -57,7 +61,7 @@
                         </span>
                         <input placeholder="Indentificación..." id="identification" type="text"
                             class="form-control @error('identification') is-invalid @enderror" name="identification"
-                            value="{{ old('identification') }}">
+                            value="{{ old('identification', $client->identification) }}">
                     </div>
 
                     @error('identification')
@@ -77,7 +81,7 @@
                         </span>
                         <input placeholder="Nombres..." id="name" type="text"
                             class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ old('name') }}">
+                            value="{{ old('name', $client->name) }}">
                     </div>
 
                     @error('name')
@@ -97,7 +101,7 @@
                         </span>
                         <input placeholder="Nombre comercial..." id="comercialName" type="text"
                             class="form-control @error('comercial_name') is-invalid @enderror" name="comercial_name"
-                            value="{{ old('comercial_name') }}">
+                            value="{{ old('comercial_name', $client->comercial_name) }}">
                     </div>
 
                     @error('comercial_name')
@@ -117,7 +121,7 @@
                         </span>
                         <input placeholder="Número Telefónico..." id="phone" type="text"
                             class="form-control @error('phone') is-invalid @enderror" name="phone"
-                            value="{{ old('phone') }}">
+                            value="{{ old('phone', $client->phone) }}">
                     </div>
 
                     @error('phone')
@@ -137,7 +141,7 @@
                         </span>
                         <input placeholder="Correo electrónico..." id="email" type="text"
                             class="form-control @error('email') is-invalid @enderror" name="email"
-                            value="{{ old('email') }}">
+                            value="{{ old('email', $client->email) }}">
                     </div>
 
                     @error('email')
@@ -151,7 +155,7 @@
                 <div class="border-top border-4 mt-4"></div>
 
                 <div class="col-md-12">
-                    <h6 class="card-title">Registro del responsable de Empresa</h5>
+                    <h6 class="card-title">Responsable de Empresa</h5>
                 </div>
 
                 <div class="col-md-6">
@@ -164,7 +168,7 @@
                         </span>
                         <input placeholder="Nombres del Responsable" id="responsibleName" type="text"
                             class="form-control @error('responsible_name') is-invalid @enderror"
-                            name="responsible_name" value="{{ old('responsible_name') }}">
+                            name="responsible_name" value="{{ old('responsible_name', $responsible->name) }}">
                     </div>
 
                     @error('responsible_name')
@@ -184,7 +188,8 @@
                         </span>
                         <input placeholder="Apellidos del responsable" id="responsibleLastname" type="text"
                             class="form-control @error('responsible_lastname') is-invalid @enderror"
-                            name="responsible_lastname" value="{{ old('responsible_lastname') }}">
+                            name="responsible_lastname"
+                            value="{{ old('responsible_lastname', $responsible->lastname) }}">
                     </div>
 
                     @error('responsible_lastname')
@@ -204,7 +209,7 @@
                         </span>
                         <input placeholder="Correo del responsable" id="responsibleEmail" type="text"
                             class="form-control @error('responsible_email') is-invalid @enderror"
-                            name="responsible_email" value="{{ old('responsible_email') }}">
+                            name="responsible_email" value="{{ old('responsible_email', $responsible->email) }}">
                     </div>
 
                     @error('responsible_email')
@@ -217,14 +222,14 @@
 
                 <div class="col-md-6">
                     <label for="responsiblePassword"
-                        class="form-label @error('responsible_password') text-danger fw-bold @enderror">Contraseña
+                        class="form-label @error('responsible_password') text-danger fw-bold @enderror">Cambiar
+                        contraseña
                         del responsable</label>
                     <div class="input-group @error('responsible_password') text-danger @enderror">
                         <span class="input-group-text @error('responsible_password') border border-danger @enderror">
                             <i class="ri ri-key-2-line @error('responsible_password') text-danger @enderror"></i>
                         </span>
-                        <input placeholder="Contraseña del responsable"
-                            id="responsiblePassword" type="password"
+                        <input placeholder="Contraseña del responsable" id="responsiblePassword" type="password"
                             class="form-control @error('responsible_password') is-invalid @enderror"
                             name="responsible_password" value="{{ old('responsible_password') }}">
                     </div>

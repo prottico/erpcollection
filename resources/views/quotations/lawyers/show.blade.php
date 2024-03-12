@@ -400,13 +400,13 @@
                             @endforeach
                         </select>
                     </div>
-
+{{-- 
                     @error('cost')
                         <div class="text-danger p-2 mt-1 rounded">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                             {{ $message }}
                         </div>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <div class="col-md-6">
