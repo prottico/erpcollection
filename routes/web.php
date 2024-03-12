@@ -23,8 +23,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
     // return redirect()->route('login');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
@@ -89,7 +90,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/usuarios', [ClientsCompanyController::class, 'index'])->name('clients.company.users.index');
         Route::get('/usuarios/nuevo', [ClientsCompanyController::class, 'create'])->name('clients.company.users.create');
         Route::patch('/usuarios/nuevo', [ClientsCompanyController::class, 'store'])->name('clients.company.users.store');
-        Route::get('/usuarios/{token}', [QuotationsController::class, 'show'])->name('clients.company.users.show');
+        Route::get('/usuarios/{token}', [ClientsCompanyController::class, 'show'])->name('clients.company.users.show');
+        Route::patch('/usuarios/{token}', [ClientsCompanyController::class, 'update'])->name('clients.company.users.update');
     });
 });
 

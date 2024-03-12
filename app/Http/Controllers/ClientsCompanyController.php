@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveUsersForCompanyRequest;
+use App\Http\Requests\UpdatePeopleRequest;
 use App\Models\Person;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class ClientsCompanyController extends Controller
     {
         $companyId = $request->user()->person->id;
         $data = Person::where('company_id', $companyId)->whereNotIn('id', [$companyId])->get();
-        return view('company.index', compact('data'));
+        return view('company.people.index', compact('data'));
     }
 
     /**
@@ -25,7 +26,7 @@ class ClientsCompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        return view('company.people.create');
     }
 
     /**
@@ -42,7 +43,6 @@ class ClientsCompanyController extends Controller
             $validatedData['company_id'] = $request->user()->person->id;
             $user->person()->create($validatedData);
             return redirect()->route('clients.company.users.index')->with('success', 'Registro creado correctamente');
-
         } catch (\Throwable $th) {
             Log::error([
                 'Message' => $th->getMessage(),
@@ -57,9 +57,14 @@ class ClientsCompanyController extends Controller
      */
     public function show(string $token)
     {
-
-        return $token;
-        // return Person::where('token', $token)->first();
+        try {
+            $person = Person::where('token', $token)->first();
+            return view('company.people.show', compact('person'));
+        } catch (\Throwable $th) {
+            Log::error([
+                'Message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -73,9 +78,24 @@ class ClientsCompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePeopleRequest $request, string $token)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+            $person = Person::where('token', $token)->first();
+
+            if ($validatedData['password'] == null) {
+                $validatedData['password'] = $person->user->password;
+            }
+            $person->user->update($validatedData);
+            $person->update($validatedData);
+
+            return redirect()->route('clients.company.users.index')->with('success', 'Registro actualizado correctamente');
+        } catch (\Throwable $th) {
+            Log::error([
+                'Message' => $th->getMessage()
+            ]);
+        }
     }
 
     /**
