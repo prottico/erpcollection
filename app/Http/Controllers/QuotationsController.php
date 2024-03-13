@@ -62,7 +62,7 @@ class QuotationsController extends Controller
 
             return $this->redirectBasedOnUserRole($request);
         } catch (\Throwable $exception) {
-            Log::error(['Message' => $exception->getMessage()]);
+            Log::error(['Message' => $exception->getMessage(), 'data' => $validatedData]);
             return back()->with('error', '¡Ha ocurrido un error inesperado!');
         }
     }
@@ -116,7 +116,7 @@ class QuotationsController extends Controller
         if (auth()->check()) {
             /** @var \App\Models\User $user */
             $user = auth()->user();
-            return $user->hasRole('independent-client')
+            return $user->hasRole('independent-client|company-client|employee')
                 ? redirect()->route('clients.quotations.index')->with('success', 'Cotización registrada correctamente!')
                 : redirect()->route('quotations.index')->with('success', 'Cotización registrada correctamente!');
         }
@@ -165,18 +165,29 @@ class QuotationsController extends Controller
     {
         try {
             $validatedData = $request->validated();
-            $quotation = Quotation::where('token', $token)->with('budget')->first();
+            $quotation = Quotation::where('token', $token)->with(['budget', 'budget.products'])->first();
 
             $budgetData =  array_merge(array_diff_key($validatedData, ['type_case_id' => null]));
             $budgetData['quotation_id'] = $quotation->id;
 
             if (!$quotation->budget) {
-                $quotation->budget()->create($budgetData);
+                $budget = $quotation->budget->create($budgetData);
+                $budget->products->create([
+                    'budget_id' => $quotation->budget->id,
+                    'name' => $validatedData['honorary1'],
+                    'description' => $validatedData['description_honorary_1'],
+                    'price' => $validatedData['price_honorary_1'],
+                ]);
             } else {
                 $quotation->budget->fill($budgetData);
                 $quotation->budget->save();
+                $quotation->budget->products->update([
+                    'budget_id' => $quotation->budget->id,
+                    'name' => $validatedData['honorary1'],
+                    'description' => $validatedData['description_honorary_1'],
+                    'price' => $validatedData['price_honorary_1'],
+                ]);
             }
-
             $quotation->update($validatedData);
 
             return redirect()->route('lawyers.quotations.index')->with('success', 'Registro actualizado correctamente');

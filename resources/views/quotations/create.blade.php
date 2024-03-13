@@ -248,7 +248,7 @@
                       <input id="lastPaymentDay" type="date" class="form-control" name="last_payment_day"
                           value="{{ old('last_payment_day') }}" {{ old('no_apply_last_payment_day') ? 'readonly' : '' }}>
                   </div>
-              
+
                   @error('last_payment_day')
                   <div class="text-danger p-2 mt-1 rounded">
                       <i class="bi bi-exclamation-triangle-fill mr-2"></i>
@@ -256,7 +256,7 @@
                   </div>
                   @enderror
               </div>
-              
+
               <div class="col-md-4 d-flex justify-content-center align-items-center">
                   <div class="form-check mt-4">
                       <input class="form-check-input" name="no_apply_last_payment_day" type="checkbox" value="1" id="flexCheckDefault"
@@ -265,7 +265,7 @@
                           <strong>No aplica (Dia del último pago)</strong>
                       </label>
                   </div>
-              
+
                   @error('no_apply_last_payment_day')
                   <div class="text-danger p-2 mt-1 rounded">
                       <i class="bi bi-exclamation-triangle-fill mr-2"></i>
@@ -273,11 +273,11 @@
                   </div>
                   @enderror
               </div>
-              
+
               <script>
                   const checkbox = document.getElementById('flexCheckDefault');
                   const dateInput = document.getElementById('lastPaymentDay');
-              
+
                   checkbox.addEventListener('change', function() {
                       if (this.checked) {
                           dateInput.disabled = true;
@@ -285,7 +285,7 @@
                           dateInput.disabled = false;
                       }
                   });
-              
+
                   dateInput.addEventListener('input', function() {
                       if (this.value) {
                           checkbox.disabled = true;
@@ -416,7 +416,7 @@
                 </div>
 
                 <div class="text-end">
-                    @role('independent-client')
+                    @role('independent-client|company-client|employee')
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check"></i>
                         Enviar

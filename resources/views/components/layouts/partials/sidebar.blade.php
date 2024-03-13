@@ -58,7 +58,7 @@
 
         @endrole
 
-        @role('independent-client|company-client')
+        @role('independent-client|company-client|employee')
         <li class="nav-heading">Cotizaciones</li>
 
         <li class="nav-item">

@@ -8,6 +8,7 @@ use App\Http\Controllers\LawyersController;
 use App\Http\Controllers\LawyersQuotationsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuotationsController;
+use App\Http\Controllers\ReportController;
 use App\Models\Quotation;
 use Illuminate\Support\Facades\Route;
 
@@ -67,10 +68,12 @@ Route::middleware('auth')->group(function () {
     });
 
     // Cotizaciones de Admin y Clientes
-    Route::group(['middleware' => ['role:general-admin|independent-client|company-client']], function () {
+    Route::group(['middleware' => ['role:general-admin|independent-client|company-client|employee']], function () {
         Route::get('/cotizaciones/nuevo', [QuotationsController::class, 'create'])->name('quotations.create');
         Route::get('/cotizaciones/{token}', [QuotationsController::class, 'show'])->name('quotations.show');
         Route::patch('/cotizaciones/nuevo', [QuotationsController::class, 'store'])->name('quotations.store');
+
+        Route::get('/report-budget/{token}', [ReportController::class, 'pdfQuotationBudgetGenerate'])->name('report.quotation.budget');
     });
 
     // Cotizaciones para abogados
@@ -81,7 +84,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Cotizaciones por Clientes
-    Route::group(['middleware' => ['role:independent-client|company-client']], function () {
+    Route::group(['middleware' => ['role:independent-client|company-client|employee']], function () {
         Route::get('/mis-cotizaciones', [ClientsQuotationsController::class, 'index'])->name('clients.quotations.index');
     });
 

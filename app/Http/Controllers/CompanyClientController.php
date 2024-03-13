@@ -52,12 +52,19 @@ class CompanyClientController extends Controller
 
             $user->assignRole('company-client');
 
-            $user->person()->create([
+            $person = $user->person()->create([
                 'name' => $validatedData['responsible_name'],
                 'lastname' => $validatedData['responsible_lastname'],
                 'email' => $validatedData['responsible_email'],
                 'responsible' => true,
                 'company_id' => $company->id
+            ]);
+
+            $person->client()->create([
+                'person_id' => $person->id,
+                'client_type_id' => 1,
+                'user_type_id' =>  1,
+                'token' => $this->getFakerToken()
             ]);
 
             return redirect()->route('company.client.index')->with('success', 'Registro creado correctamente');

@@ -71,7 +71,7 @@
                         <span class="input-group-text @error('credit_due_date') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('credit_due_date') text-danger @enderror"></i>
                         </span>
-                        <input id="creditDueDate" type="date"
+                        <input id="creditDueDate" type="date" readonly
                             class="form-control @error('credit_due_date') is-invalid @enderror" name="credit_due_date"
                             value="{{ old('credit_due_date', $quotation->credit_due_date) }}">
                     </div>
@@ -241,7 +241,7 @@
                         <span class="input-group-text @error('amount_last_payment') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('amount_last_payment') text-danger @enderror"></i>
                         </span>
-                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago"
+                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago" readonly
                             class="form-control @error('amount_last_payment') is-invalid @enderror"
                             name="amount_last_payment" value="{{ $quotation->amount_last_payment }}">
                     </div>
@@ -360,27 +360,7 @@
 
                 <div class="border-top border-4 mt-4"></div>
 
-                <div class="col-md-6">
-                    <label for="iva"
-                        class="form-label @error('iva') text-danger fw-bold @enderror"><strong>IVA</strong></label>
-                    <div class="input-group @error('iva') text-danger @enderror">
-                        <span class="input-group-text @error('iva') border border-danger @enderror">
-                            <i class="ri ri-exchange-dollar-line @error('iva') text-danger @enderror"></i>
-                        </span>
-                        <input id="iva" type="text" placeholder="Determina el iva"
-                            class="form-control @error('iva') is-invalid @enderror" name="iva"
-                            value="{{ old('iva', $quotation->budget ? $quotation->budget->iva : '') }}">
-                    </div>
-
-                    @error('iva')
-                        <div class="text-danger p-2 mt-1 rounded">
-                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="typeCase"
                         class="form-label @error('type_case_id') text-danger fw-bold @enderror"><strong>Determinar
                             tipo
@@ -400,16 +380,226 @@
                             @endforeach
                         </select>
                     </div>
-{{-- 
-                    @error('cost')
+
+                    @error('type_case_id')
                         <div class="text-danger p-2 mt-1 rounded">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                             {{ $message }}
                         </div>
-                    @enderror --}}
+                    @enderror
                 </div>
 
-                <div class="col-md-6">
+                {{-- HONORARIOS --}}
+
+                <div class="col-md-5">
+                    <label for="honorary1"
+                        class="form-label @error('honorary1') text-danger fw-bold @enderror"><strong>Honorario
+                            #1</strong></label>
+                    <div class="input-group @error('honorary1') text-danger @enderror">
+                        <span class="input-group-text @error('honorary1') border border-danger @enderror">
+                            <i class="ri ri-checkbox-circle-fill @error('honorary1') text-danger @enderror"></i>
+                        </span>
+                        <input id="honorary1" type="text" placeholder="Honorario"
+                            class="form-control @error('honorary1') is-invalid @enderror" name="honorary1"
+                            value="{{ old('honorary1', $quotation->budget->products->name) }}">
+                    </div>
+
+                    @error('honorary1')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="col-md-5">
+                    <label for="description_honorary_1"
+                        class="form-label @error('description_honorary_1') text-danger fw-bold @enderror"><strong>Descripción</strong></label>
+                    <div class="input-group @error('description_honorary_1') text-danger @enderror">
+                        <span
+                            class="input-group-text @error('description_honorary_1') border border-danger @enderror">
+                            <i class="ri ri-pencil-fill @error('description_honorary_1') text-danger @enderror"></i>
+                        </span>
+                        <input id="description_honorary_1" type="text" placeholder="Descripción"
+                            class="form-control @error('description_honorary_1') is-invalid @enderror"
+                            name="description_honorary_1"
+                            value="{{ old('description_honorary_1', $quotation->budget->products->description) }}">
+                    </div>
+
+                    @error('description_honorary_1')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-2">
+                    <label for="price_honorary_1"
+                        class="form-label @error('price_honorary_1') text-danger fw-bold @enderror"><strong>Precio</strong></label>
+                    <div class="input-group @error('price_honorary_1') text-danger @enderror">
+                        <span class="input-group-text @error('price_honorary_1') border border-danger @enderror">
+                            <i
+                                class="ri ri-money-dollar-circle-fill @error('price_honorary_1') text-danger @enderror"></i>
+                        </span>
+                        <input id="price_honorary_1" type="text" placeholder="Precio"
+                            class="form-control @error('price_honorary_1') is-invalid @enderror"
+                            name="price_honorary_1"
+                            value="{{ old('price_honorary_1', $quotation->budget->products->price) }}">
+                    </div>
+
+                    @error('price_honorary_1')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                {{-- <div class="col-md-5">
+                    <label for="honorary2"
+                        class="form-label @error('honorary2') text-danger fw-bold @enderror"><strong>Honorario
+                            #2</strong></label>
+                    <div class="input-group @error('honorary2') text-danger @enderror">
+                        <span class="input-group-text @error('honorary2') border border-danger @enderror">
+                            <i class="ri ri-checkbox-circle-fill @error('honorary2') text-danger @enderror"></i>
+                        </span>
+                        <input id="honorary2" type="text" placeholder="Honorario"
+                            class="form-control @error('honorary2') is-invalid @enderror" name="honorary2"
+                            value="{{ old('honorary2') }}">
+                    </div>
+
+                    @error('honorary2')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="col-md-5">
+                    <label for="description_honorary_2"
+                        class="form-label @error('description_honorary_2') text-danger fw-bold @enderror"><strong>Descripción</strong></label>
+                    <div class="input-group @error('description_honorary_2') text-danger @enderror">
+                        <span
+                            class="input-group-text @error('description_honorary_2') border border-danger @enderror">
+                            <i class="ri ri-pencil-fill @error('description_honorary_2') text-danger @enderror"></i>
+                        </span>
+                        <input id="description_honorary_2" type="text" placeholder="Descripción"
+                            class="form-control @error('description_honorary_2') is-invalid @enderror"
+                            name="description_honorary_2" value="{{ old('description_honorary_2') }}">
+                    </div>
+
+                    @error('description_honorary_2')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-2">
+                    <label for="price_honorary_2"
+                        class="form-label @error('price_honorary_2') text-danger fw-bold @enderror"><strong>Precio</strong></label>
+                    <div class="input-group @error('price_honorary_2') text-danger @enderror">
+                        <span class="input-group-text @error('price_honorary_2') border border-danger @enderror">
+                            <i
+                                class="ri ri-money-dollar-circle-fill @error('price_honorary_2') text-danger @enderror"></i>
+                        </span>
+                        <input id="price_honorary_2" type="text" placeholder="Precio"
+                            class="form-control @error('price_honorary_2') is-invalid @enderror"
+                            name="price_honorary_2" value="{{ old('price_honorary_2') }}">
+                    </div>
+
+                    @error('price_honorary_2')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="col-md-5">
+                    <label for="honorary2"
+                        class="form-label @error('honorary2') text-danger fw-bold @enderror"><strong>Honorario
+                            #3</strong></label>
+                    <div class="input-group @error('honorary2') text-danger @enderror">
+                        <span class="input-group-text @error('honorary2') border border-danger @enderror">
+                            <i class="ri ri-checkbox-circle-fill @error('honorary2') text-danger @enderror"></i>
+                        </span>
+                        <input id="honorary2" type="text" placeholder="Honorario"
+                            class="form-control @error('honorary2') is-invalid @enderror" name="honorary3"
+                            value="{{ old('honorary2') }}">
+                    </div>
+
+                    @error('honorary2')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="col-md-5">
+                    <label for="description_honorary_3"
+                        class="form-label @error('description_honorary_3') text-danger fw-bold @enderror"><strong>Descripción</strong></label>
+                    <div class="input-group @error('description_honorary_3') text-danger @enderror">
+                        <span
+                            class="input-group-text @error('description_honorary_3') border border-danger @enderror">
+                            <i class="ri ri-pencil-fill @error('description_honorary_3') text-danger @enderror"></i>
+                        </span>
+                        <input id="description_honorary_3" type="text" placeholder="Descripción"
+                            class="form-control @error('description_honorary_3') is-invalid @enderror"
+                            name="description_honorary_3" value="{{ old('description_honorary_3') }}">
+                    </div>
+
+                    @error('description_honorary_2')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-2">
+                    <label for="price_honorary_3"
+                        class="form-label @error('price_honorary_3') text-danger fw-bold @enderror"><strong>Precio</strong></label>
+                    <div class="input-group @error('price_honorary_3') text-danger @enderror">
+                        <span class="input-group-text @error('price_honorary_3') border border-danger @enderror">
+                            <i
+                                class="ri ri-money-dollar-circle-fill @error('price_honorary_3') text-danger @enderror"></i>
+                        </span>
+                        <input id="price_honorary_3" type="text" placeholder="Precio"
+                            class="form-control @error('price_honorary_3') is-invalid @enderror"
+                            name="price_honorary_3" value="{{ old('price_honorary_1') }}">
+                    </div>
+
+                    @error('price_honorary_3')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div> --}}
+
+
+                <div class="col-md-4">
+                    <label for="iva"
+                        class="form-label @error('iva') text-danger fw-bold @enderror"><strong>IVA</strong></label>
+                    <div class="input-group @error('iva') text-danger @enderror">
+                        <span class="input-group-text @error('iva') border border-danger @enderror">
+                            <i class="ri ri-exchange-dollar-line @error('iva') text-danger @enderror"></i>
+                        </span>
+                        <input id="iva" type="text" placeholder="Determina el iva"
+                            class="form-control @error('iva') is-invalid @enderror" name="iva"
+                            value="{{ old('iva', $quotation->budget ? $quotation->budget->iva : '') }}">
+                    </div>
+
+                    @error('iva')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-4">
                     <label for="subtotal"
                         class="form-label @error('subtotal') text-danger fw-bold @enderror"><strong>Subtotal</strong></label>
                     <div class="input-group @error('subtotal') text-danger @enderror">
@@ -428,7 +618,8 @@
                         </div>
                     @enderror
                 </div>
-                <div class="col-md-6">
+
+                <div class="col-md-4">
                     <label for="total"
                         class="form-label @error('total') text-danger fw-bold @enderror"><strong>Total</strong></label>
                     <div class="input-group @error('total') text-danger @enderror">

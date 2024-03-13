@@ -41,7 +41,9 @@ class ClientsCompanyController extends Controller
 
             $validatedData['token'] = $this->getFakerToken();
             $validatedData['company_id'] = $request->user()->person->id;
-            $user->person()->create($validatedData);
+            $person = $user->person()->create($validatedData);
+            $person->client()->create($validatedData);
+
             return redirect()->route('clients.company.users.index')->with('success', 'Registro creado correctamente');
         } catch (\Throwable $th) {
             Log::error([

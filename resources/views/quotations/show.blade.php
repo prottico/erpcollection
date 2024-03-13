@@ -198,7 +198,7 @@
                         <span class="input-group-text @error('last_payment_day') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('last_payment_day') text-danger @enderror"></i>
                         </span>
-                        <input id="lastPaymentDay" type="date" readonly
+                        <input id="lastPaymentDay" type="date" readonly disabled
                             class="form-control @error('last_payment_day') is-invalid @enderror"
                             name="last_payment_day"
                             value="{{ old('last_payment_day', $quotation->last_payment_day) }}">
@@ -404,18 +404,7 @@
                 @role('independent-client')
                     @if ($quotation->budget && $quotation->typeCase && $quotation->typeCase->name)
                         <div class="border-top border-4 mt-4"></div>
-                        <div class="col-md-6">
-                            <label for="cost" class="form-label "><strong>IVA</strong></label>
-                            <div class="input-group ">
-                                <span class="input-group-text">
-                                    <i class="ri ri-exchange-dollar-line "></i>
-                                </span>
-                                <input id="cost" type="text" placeholder="Determina el costo" readonly
-                                    class="form-control" name="cost" value="{{ $quotation->budget->iva }}">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="cost" class="form-label"><strong>Tipo
                                     de Caso determinado</strong></label>
                             <div class="input-group">
@@ -428,29 +417,121 @@
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-5">
+                            <label for="honorary1"
+                                class="form-label @error('honorary1') text-danger fw-bold @enderror"><strong>Honorario
+                                    #1</strong></label>
+                            <div class="input-group @error('honorary1') text-danger @enderror">
+                                <span class="input-group-text @error('honorary1') border border-danger @enderror">
+                                    <i class="ri ri-checkbox-circle-fill @error('honorary1') text-danger @enderror"></i>
+                                </span>
+                                <input id="honorary1" type="text" placeholder="Honorario" readonly
+                                    class="form-control @error('honorary1') is-invalid @enderror" name="honorary1"
+                                    value="{{ old('honorary1', $quotation->budget && $quotation->budget->products ? $quotation->budget->products->name : '') }}">
+                            </div>
+
+                            @error('honorary1')
+                                <div class="text-danger p-2 mt-1 rounded">
+                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-5">
+                            <label for="description_honorary_1"
+                                class="form-label @error('description_honorary_1') text-danger fw-bold @enderror"><strong>Descripción</strong></label>
+                            <div class="input-group @error('description_honorary_1') text-danger @enderror">
+                                <span
+                                    class="input-group-text @error('description_honorary_1') border border-danger @enderror">
+                                    <i
+                                        class="ri ri-pencil-fill @error('description_honorary_1') text-danger @enderror"></i>
+                                </span>
+                                <input id="description_honorary_1" type="text" placeholder="Descripción" readonly
+                                    class="form-control @error('description_honorary_1') is-invalid @enderror"
+                                    name="description_honorary_1"
+                                    value="{{ old('description_honorary_1', $quotation->budget && $quotation->budget->products ? $quotation->budget->products->description : '') }}">
+                            </div>
+
+                            @error('description_honorary_1')
+                                <div class="text-danger p-2 mt-1 rounded">
+                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="price_honorary_1"
+                                class="form-label @error('price_honorary_1') text-danger fw-bold @enderror"><strong>Precio</strong></label>
+                            <div class="input-group @error('price_honorary_1') text-danger @enderror">
+                                <span class="input-group-text @error('price_honorary_1') border border-danger @enderror">
+                                    <i
+                                        class="ri ri-money-dollar-circle-fill @error('price_honorary_1') text-danger @enderror"></i>
+                                </span>
+                                <input id="price_honorary_1" type="text" placeholder="Precio" readonly
+                                    class="form-control @error('price_honorary_1') is-invalid @enderror"
+                                    name="price_honorary_1"
+                                    value="{{ old('price_honorary_1', $quotation->budget && $quotation->budget->products? $quotation->budget->products->price : '') }}">
+                            </div>
+
+                            @error('price_honorary_1')
+                                <div class="text-danger p-2 mt-1 rounded">
+                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="iva"
+                                class="form-label @error('iva') text-danger fw-bold @enderror"><strong>IVA</strong></label>
+                            <div class="input-group @error('iva') text-danger @enderror">
+                                <span class="input-group-text @error('iva') border border-danger @enderror">
+                                    <i class="ri ri-exchange-dollar-line @error('iva') text-danger @enderror"></i>
+                                </span>
+                                <input id="iva" type="text" placeholder="Determina el iva" readonly
+                                    class="form-control @error('iva') is-invalid @enderror" name="iva"
+                                    value="{{ old('iva', $quotation->budget ? $quotation->budget->iva : '') }}">
+                            </div>
+
+                            @error('iva')
+                                <div class="text-danger p-2 mt-1 rounded">
+                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
                             <label for="subtotal"
                                 class="form-label @error('subtotal') text-danger fw-bold @enderror"><strong>Subtotal</strong></label>
                             <div class="input-group @error('subtotal') text-danger @enderror">
                                 <span class="input-group-text @error('subtotal') border border-danger @enderror">
                                     <i class="ri ri-exchange-dollar-line @error('subtotal') text-danger @enderror"></i>
                                 </span>
-                                <input id="subtotal" type="text" placeholder="Determina el subtotal"
+                                <input id="subtotal" type="text" placeholder="Determina el subtotal" readonly
                                     class="form-control @error('subtotal') is-invalid @enderror" name="subtotal"
-                                    value="{{ $quotation->budget ? $quotation->budget->subtotal : '' }}">
+                                    value="{{ old('subtotal', $quotation->budget ? $quotation->budget->subtotal : '') }}">
                             </div>
+
+                            @error('subtotal')
+                                <div class="text-danger p-2 mt-1 rounded">
+                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="total"
                                 class="form-label @error('total') text-danger fw-bold @enderror"><strong>Total</strong></label>
                             <div class="input-group @error('total') text-danger @enderror">
                                 <span class="input-group-text @error('total') border border-danger @enderror">
                                     <i class="ri ri-exchange-dollar-line @error('total') text-danger @enderror"></i>
                                 </span>
-                                <input id="total" type="text" placeholder="Determina el total"
+                                <input id="total" type="text" placeholder="Determina el total" readonly
                                     class="form-control @error('total') is-invalid @enderror" name="total"
-                                    value="{{ $quotation->budget ? $quotation->budget->total : '' }}">
+                                    value="{{ old('total', $quotation->budget ? $quotation->budget->total : '') }}">
                             </div>
 
                             @error('total')
@@ -461,17 +542,26 @@
                             @enderror
                         </div>
 
+
                         <div class="col-md-12">
-                            <label for="lawyer_commet" class="form-label"><strong>Comentario del Abogado
-                                    asignado</strong></label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="ri ri-chat-1-fill"></i>
+                            <label for="comment"
+                                class="form-label @error('comment') text-danger fw-bold @enderror"><strong>Dejar un
+                                    comentario al cliente</strong></label>
+                            <div class="input-group @error('comment') text-danger @enderror">
+                                <span class="input-group-text @error('comment') border border-danger @enderror">
+                                    <i class="ri ri-chat-1-fill @error('comment') text-danger @enderror"></i>
                                 </span>
-                                <input id="lawyer_commet" type="text" placeholder="Dejarle un comentario al cliente"
-                                    readonly class="form-control" name="lawyer_commet"
-                                    value="{{ $quotation->budget->comment }}">
+                                <input id="comment" type="text" placeholder="Dejarle un comentario al cliente"
+                                    class="form-control @error('comment') is-invalid @enderror" name="comment"
+                                    value="{{ old('comment', $quotation->budget ? $quotation->budget->comment : '') }}">
                             </div>
+
+                            @error('comment')
+                                <div class="text-danger p-2 mt-1 rounded">
+                                    <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     @endif
 
@@ -492,13 +582,18 @@
                 @endrole
 
                 <div class="text-end">
-                    @role('independent-client')
+                    @role('independent-client|company-client|employee')
                         @if ($quotation->budget && $quotation->typeCase && $quotation->typeCase->name)
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" disabled
-                                data-bs-target="#modalAssignLawyer" id="modalReferenceTarget">
+                            <button type="button" class="btn btn-success" disabled id="modalReferenceTarget">
                                 <i class="bi bi-check"></i>
                                 Aceptar y Abrir el caso
                             </button>
+
+                            <a href="{{ route('report.quotation.budget', $quotation->token) }}" role="button"
+                                class="btn btn-primary">
+                                <i class="bi bi-download"></i>
+                                Descargar Cotización
+                            </a>
                         @endif
                     @endrole
 
