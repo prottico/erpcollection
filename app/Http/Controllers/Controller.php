@@ -48,6 +48,7 @@ class Controller extends BaseController
             } else {
 
                 $user = User::create($validatedData);
+                $user->assignRole($params['role']);
                 $person = $user->person()->create($validatedData);
                 $person->client()->create([
                     'person_id' => $person->id,

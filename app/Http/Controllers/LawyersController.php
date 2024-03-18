@@ -35,10 +35,6 @@ class LawyersController extends Controller
      */
     public function store(SaveLawyersRequest $request)
     {
-        // $validatedData = $request->validated();
-        // $params = ['type_user' => 3, 'prevUrl' => 'lawyers.create', 'laterUrl' => 'lawyers.index'];
-        // return $this->storeDataClients($validatedData, $params);
-
         try {
             $validatedData = $request->validated();
             $validatedData['type_user_id'] = strval(3);
@@ -49,11 +45,11 @@ class LawyersController extends Controller
             } else {
 
                 $user = User::create($validatedData);
+                $user->assignRole('lawyer');
                 $validatedData['token'] = $this->getFakerToken();
                 $person = $user->person()->create($validatedData);
                 $person->client()->create([
                     'person_id' => $person->id,
-                    'client_type_id' => strval(2),
                     'user_type_id' => $validatedData['type_user_id'],
                     'token' => $this->getFakerToken()
                 ]);
@@ -99,11 +95,17 @@ class LawyersController extends Controller
     public function update(SaveLawyersRequest $request, Person $lawyer)
     {
         try {
+
             $faker = Faker::create();
             $validatedData = $request->validated();
             $validatedData['token'] = strval($faker->unique()->sha256());
             $lawyer->update($validatedData);
             $validatedData['token'] = strval($faker->unique()->sha256());
+
+            if ($validatedData['password'] == null) {
+                $validatedData['password'] = $lawyer->user->password;
+            }
+
             $lawyer->user->update($validatedData);
             return redirect()->route('lawyers.index')->with('success', 'Registro actualizado correctamente!');
         } catch (\Throwable $th) {

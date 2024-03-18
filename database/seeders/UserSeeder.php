@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
 
         $companyUser->assignRole('company-client');
 
-        $companyUser->person()->create([
+        $company = $companyUser->person()->create([
             'identification' => $faker->unique()->randomNumber(8, true),
             'name' => $companyUser->name,
             'lastname' => $faker->lastName(),
@@ -82,12 +82,12 @@ class UserSeeder extends Seeder
             'company_id' => $company->id
         ]);
 
-        // $company->client()->create([
-        //     'person_id' => $company->id,
-        //     'client_type_id' => 1,
-        //     'user_type_id' => 1,
-        //     'token' => $faker->sha256,
-        // ]);
+        $company->client()->create([
+            'person_id' => $company->id,
+            'client_type_id' => 1,
+            'user_type_id' => 1,
+            'token' => $faker->sha256,
+        ]);
 
 
         // Cracion de un abogado

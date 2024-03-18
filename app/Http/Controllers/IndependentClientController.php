@@ -17,7 +17,13 @@ class IndependentClientController extends Controller
      */
     public function index(Client $clients)
     {
-        $data = $this->getClientsByType(2);
+        // $data = $this->getClientsByType(2);
+        $data = Client::where('client_type_id', 2)
+            ->whereHas('person', function ($query) {
+                $query->whereNotIn('id', [1, 4]);
+            })
+            ->with(['person', 'userType'])
+            ->get();
         return view('clients.independents.index', compact('data'));
     }
 
@@ -36,7 +42,7 @@ class IndependentClientController extends Controller
     public function store(SaveIndependentClientRequest $request)
     {
         $validatedData = $request->validated();
-        $params = ['type_user' => 2, 'prevUrl' => 'independent.client.create', 'laterUrl' => 'independent.client.index'];
+        $params = ['type_user' => 2, 'prevUrl' => 'independent.client.create', 'laterUrl' => 'independent.client.index', 'role' => 'independent-client'];
         return $this->storeDataClients($validatedData, $params);
     }
 
@@ -68,8 +74,14 @@ class IndependentClientController extends Controller
      */
     public function update(SaveIndependentClientRequest $request, Client $client)
     {
+
+
+
         try {
             $validatedData = $request->validated();
+            if ($validatedData['password'] == null) {
+                $validatedData['password'] = $client->person->user->password;
+            }
             $validatedData['token'] = $this->getFakerToken();
 
             $client->update($validatedData);

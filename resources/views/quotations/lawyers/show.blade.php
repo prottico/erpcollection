@@ -369,16 +369,25 @@
                         <span class="input-group-text @error('type_case_id') border border-danger @enderror">
                             <i class="ri ri-suitcase-line @error('type_case_id') text-danger @enderror"></i>
                         </span>
-                        <select name="type_case_id"
-                            class="form-select @error('type_case_id') border border-danger @enderror" id="">
-                            <option value="">Seleccione</option>
-                            @foreach ($typeCases as $type)
-                                <option value="{{ $type->id }}"
-                                    {{ old('type_case_id', $quotation->type_case_id) == $type->id ? 'selected' : '' }}>
-                                    {{ $type->name }}
-                                </option>
-                            @endforeach
-                        </select>
+
+                        @if ($quotation->budget)
+                            <input id="honorary1" type="text" placeholder="Honorario"
+                                @if ($quotation->budget) readonly @endif
+                                class="form-control @error('honorary1') is-invalid @enderror" name="honorary1"
+                                value="{{ $quotation->typeCase->name }}">
+                        @else
+                            <select name="type_case_id" @if ($quotation->budget) readonly @endif
+                                class="form-select @error('type_case_id') border border-danger @enderror"
+                                id="">
+                                <option value="">Seleccione</option>
+                                @foreach ($typeCases as $type)
+                                    <option value="{{ $type->id }}"
+                                        {{ old('type_case_id', $quotation->type_case_id) == $type->id ? 'selected' : '' }}>
+                                        {{ $type->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @endif
                     </div>
 
                     @error('type_case_id')
@@ -400,8 +409,9 @@
                             <i class="ri ri-checkbox-circle-fill @error('honorary1') text-danger @enderror"></i>
                         </span>
                         <input id="honorary1" type="text" placeholder="Honorario"
+                            @if ($quotation->budget) readonly @endif
                             class="form-control @error('honorary1') is-invalid @enderror" name="honorary1"
-                            value="{{ old('honorary1', $quotation->budget->products->name) }}">
+                            value="{{ old('honorary1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->name : '') }}">
                     </div>
 
                     @error('honorary1')
@@ -420,9 +430,10 @@
                             <i class="ri ri-pencil-fill @error('description_honorary_1') text-danger @enderror"></i>
                         </span>
                         <input id="description_honorary_1" type="text" placeholder="Descripción"
+                            @if ($quotation->budget) readonly @endif
                             class="form-control @error('description_honorary_1') is-invalid @enderror"
                             name="description_honorary_1"
-                            value="{{ old('description_honorary_1', $quotation->budget->products->description) }}">
+                            value="{{ old('description_honorary_1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->description : '') }}">
                     </div>
 
                     @error('description_honorary_1')
@@ -442,9 +453,10 @@
                                 class="ri ri-money-dollar-circle-fill @error('price_honorary_1') text-danger @enderror"></i>
                         </span>
                         <input id="price_honorary_1" type="text" placeholder="Precio"
+                            @if ($quotation->budget) readonly @endif
                             class="form-control @error('price_honorary_1') is-invalid @enderror"
                             name="price_honorary_1"
-                            value="{{ old('price_honorary_1', $quotation->budget->products->price) }}">
+                            value="{{ old('price_honorary_1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->price : '') }}">
                     </div>
 
                     @error('price_honorary_1')
@@ -587,6 +599,7 @@
                             <i class="ri ri-exchange-dollar-line @error('iva') text-danger @enderror"></i>
                         </span>
                         <input id="iva" type="text" placeholder="Determina el iva"
+                            @if ($quotation->budget) readonly @endif
                             class="form-control @error('iva') is-invalid @enderror" name="iva"
                             value="{{ old('iva', $quotation->budget ? $quotation->budget->iva : '') }}">
                     </div>
@@ -607,6 +620,7 @@
                             <i class="ri ri-exchange-dollar-line @error('subtotal') text-danger @enderror"></i>
                         </span>
                         <input id="subtotal" type="text" placeholder="Determina el subtotal"
+                            @if ($quotation->budget) readonly @endif
                             class="form-control @error('subtotal') is-invalid @enderror" name="subtotal"
                             value="{{ old('subtotal', $quotation->budget ? $quotation->budget->subtotal : '') }}">
                     </div>
@@ -627,6 +641,7 @@
                             <i class="ri ri-exchange-dollar-line @error('total') text-danger @enderror"></i>
                         </span>
                         <input id="total" type="text" placeholder="Determina el total"
+                            @if ($quotation->budget) readonly @endif
                             class="form-control @error('total') is-invalid @enderror" name="total"
                             value="{{ old('total', $quotation->budget ? $quotation->budget->total : '') }}">
                     </div>
@@ -649,6 +664,7 @@
                             <i class="ri ri-chat-1-fill @error('comment') text-danger @enderror"></i>
                         </span>
                         <input id="comment" type="text" placeholder="Dejarle un comentario al cliente"
+                            @if ($quotation->budget) readonly @endif
                             class="form-control @error('comment') is-invalid @enderror" name="comment"
                             value="{{ old('comment', $quotation->budget ? $quotation->budget->comment : '') }}">
                     </div>

@@ -23,7 +23,7 @@ class Budget extends Model
         return $this->belongsTo(Quotation::class);
     }
 
-    public function products()
+    public function product()
     {
         return $this->hasOne(Product::class);
     }

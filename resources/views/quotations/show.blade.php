@@ -239,7 +239,7 @@
                         <span class="input-group-text @error('amount_last_payment') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('amount_last_payment') text-danger @enderror"></i>
                         </span>
-                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago"
+                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago" readonly
                             class="form-control @error('amount_last_payment') is-invalid @enderror"
                             name="amount_last_payment" value="{{ $quotation->amount_last_payment }}">
                     </div>
@@ -401,8 +401,8 @@
                     @enderror
                 </div>
 
-                @role('independent-client')
-                    @if ($quotation->budget && $quotation->typeCase && $quotation->typeCase->name)
+                @role('independent-client|company-client|employee')
+                    @if ($quotation->budget && $quotation->budget->product && $quotation->typeCase)
                         <div class="border-top border-4 mt-4"></div>
                         <div class="col-md-12">
                             <label for="cost" class="form-label"><strong>Tipo
@@ -427,7 +427,7 @@
                                 </span>
                                 <input id="honorary1" type="text" placeholder="Honorario" readonly
                                     class="form-control @error('honorary1') is-invalid @enderror" name="honorary1"
-                                    value="{{ old('honorary1', $quotation->budget && $quotation->budget->products ? $quotation->budget->products->name : '') }}">
+                                    value="{{ old('honorary1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->name : '') }}">
                             </div>
 
                             @error('honorary1')
@@ -449,7 +449,7 @@
                                 <input id="description_honorary_1" type="text" placeholder="Descripción" readonly
                                     class="form-control @error('description_honorary_1') is-invalid @enderror"
                                     name="description_honorary_1"
-                                    value="{{ old('description_honorary_1', $quotation->budget && $quotation->budget->products ? $quotation->budget->products->description : '') }}">
+                                    value="{{ old('description_honorary_1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->description : '') }}">
                             </div>
 
                             @error('description_honorary_1')
@@ -471,7 +471,7 @@
                                 <input id="price_honorary_1" type="text" placeholder="Precio" readonly
                                     class="form-control @error('price_honorary_1') is-invalid @enderror"
                                     name="price_honorary_1"
-                                    value="{{ old('price_honorary_1', $quotation->budget && $quotation->budget->products? $quotation->budget->products->price : '') }}">
+                                    value="{{ old('price_honorary_1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->price : '') }}">
                             </div>
 
                             @error('price_honorary_1')
@@ -545,14 +545,14 @@
 
                         <div class="col-md-12">
                             <label for="comment"
-                                class="form-label @error('comment') text-danger fw-bold @enderror"><strong>Dejar un
-                                    comentario al cliente</strong></label>
+                                class="form-label @error('comment') text-danger fw-bold @enderror"><strong>Comentario del
+                                    Abogado</strong></label>
                             <div class="input-group @error('comment') text-danger @enderror">
                                 <span class="input-group-text @error('comment') border border-danger @enderror">
                                     <i class="ri ri-chat-1-fill @error('comment') text-danger @enderror"></i>
                                 </span>
                                 <input id="comment" type="text" placeholder="Dejarle un comentario al cliente"
-                                    class="form-control @error('comment') is-invalid @enderror" name="comment"
+                                    readonly class="form-control @error('comment') is-invalid @enderror" name="comment"
                                     value="{{ old('comment', $quotation->budget ? $quotation->budget->comment : '') }}">
                             </div>
 
@@ -583,7 +583,7 @@
 
                 <div class="text-end">
                     @role('independent-client|company-client|employee')
-                        @if ($quotation->budget && $quotation->typeCase && $quotation->typeCase->name)
+                        @if ($quotation->budget && $quotation->budget->product && $quotation->typeCase)
                             <button type="button" class="btn btn-success" disabled id="modalReferenceTarget">
                                 <i class="bi bi-check"></i>
                                 Aceptar y Abrir el caso

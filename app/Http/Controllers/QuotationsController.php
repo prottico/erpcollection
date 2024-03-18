@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SaveLawyerQuotationRequest;
+use Carbon\Carbon;
+use App\Models\User;
+use RuntimeException;
+use App\Models\Budget;
+use App\Models\Product;
+use App\Models\Currency;
+use App\Models\TypeCase;
+use App\Models\Quotation;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use function Laravel\Prompts\error;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+
 use App\Http\Requests\SaveLawyersRequest;
 use App\Http\Requests\SaveQuotationRequest;
-use App\Models\Currency;
-use App\Models\Quotation;
-use App\Models\TypeCase;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use RuntimeException;
-
-use function Laravel\Prompts\error;
+use App\Http\Requests\SaveLawyerQuotationRequest;
 
 class QuotationsController extends Controller
 {
@@ -130,7 +132,7 @@ class QuotationsController extends Controller
     {
         try {
             $view = '';
-            $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase', 'budget'])->first();
+            $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase', 'budget', 'budget.product'])->first();
             $lawyers = User::where('type_user_id', 3)->whereHas('person')->with(['person'])->get();
             $typeCases = TypeCase::all();
             $currency = Currency::find($quotation->currency_id);
@@ -165,29 +167,36 @@ class QuotationsController extends Controller
     {
         try {
             $validatedData = $request->validated();
-            $quotation = Quotation::where('token', $token)->with(['budget', 'budget.products'])->first();
+            $quotation = Quotation::where('token', $token)->with(['budget', 'budget.products', 'typeCase'])->first();
 
-            $budgetData =  array_merge(array_diff_key($validatedData, ['type_case_id' => null]));
+            $budgetData =  array_merge(array_diff_key($validatedData, ['type_case_id' => null, 'honorary1' => null, 'description_honorary_1' => null, 'price_honorary_1' => null]));
+            // dd($budgetData);
             $budgetData['quotation_id'] = $quotation->id;
 
             if (!$quotation->budget) {
-                $budget = $quotation->budget->create($budgetData);
-                $budget->products->create([
-                    'budget_id' => $quotation->budget->id,
-                    'name' => $validatedData['honorary1'],
-                    'description' => $validatedData['description_honorary_1'],
-                    'price' => $validatedData['price_honorary_1'],
-                ]);
-            } else {
-                $quotation->budget->fill($budgetData);
-                $quotation->budget->save();
-                $quotation->budget->products->update([
-                    'budget_id' => $quotation->budget->id,
-                    'name' => $validatedData['honorary1'],
-                    'description' => $validatedData['description_honorary_1'],
-                    'price' => $validatedData['price_honorary_1'],
-                ]);
+                $budget = new Budget;
+                $budget->quotation_id = $quotation->id; // Agregar esta línea para asignar explícitamente el valor
+                $budget  = $quotation->budget()->save($budget);
+                $quotation->budget()->update($budgetData);
+
+                $product = new Product;
+                $product->budget_id = $budget->id;
+                $product->name = $validatedData['honorary1'];
+                $product->description = $validatedData['description_honorary_1'];
+                $product->price = $validatedData['price_honorary_1'];
+                $product->save();
             }
+            // else {
+            //     dd($budgetData);
+            //     $budget = $quotation->budget->update($budgetData);
+            //     $budget->product->update([
+            //         'budget_id' => $budget->id,
+            //         'name' => $validatedData['honorary1'],
+            //         'description' => $validatedData['description_honorary_1'],
+            //         'price' => $validatedData['price_honorary_1'],
+            //     ]);
+
+            // }
             $quotation->update($validatedData);
 
             return redirect()->route('lawyers.quotations.index')->with('success', 'Registro actualizado correctamente');
