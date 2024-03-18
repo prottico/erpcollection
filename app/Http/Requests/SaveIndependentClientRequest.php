@@ -28,6 +28,7 @@ class SaveIndependentClientRequest extends FormRequest
             'lastname' => ['required'],
             'phone' => ['required'],
             'email' => ['required', 'email'],
+            'password' => ['nullable'],
             'associated_company' => ['nullable'],
         ];
     }

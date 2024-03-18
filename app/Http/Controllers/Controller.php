@@ -33,7 +33,7 @@ class Controller extends BaseController
     {
         return Client::where('client_type_id', $type)
             ->whereHas('person', function ($query) {
-                $query->whereNotIn('id', [1]);
+                $query->whereNotIn('id', [1,4]);
             })
             ->with(['person', 'userType'])
             ->get();
@@ -48,6 +48,7 @@ class Controller extends BaseController
             } else {
 
                 $user = User::create($validatedData);
+                $user->assignRole($params['role']);
                 $person = $user->person()->create($validatedData);
                 $person->client()->create([
                     'person_id' => $person->id,

@@ -21,14 +21,14 @@ class PersonFactory extends Factory
         $userIds = User::pluck('id')->toArray();
         $identityTypes = IdentityType::pluck('id')->toArray();
         return [
-            'physical_client' => $this->faker->address(),
+            // 'physical_client' => $this->faker->address(),
             'identification' => $this->faker->unique()->randomNumber(8, true),
             'name' => $this->faker->name(),
             'lastname' => $this->faker->lastName(),
             'phone' => $this->faker->e164PhoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'associated_company' => $this->faker->company(),
-            'comercial_name' => $this->faker->company(),
+            // 'comercial_name' => $this->faker->company(),
             'identity_type_id' => $this->faker->randomElement($identityTypes),
             'user_id' =>  $this->faker->randomElement($userIds),
             'token' => $this->faker->sha256

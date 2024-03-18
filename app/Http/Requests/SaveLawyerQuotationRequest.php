@@ -22,9 +22,21 @@ class SaveLawyerQuotationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cost' => ['required'],
+            'iva' => ['required'],
             'type_case_id' => ['required'],
-            'lawyer_commet' => ['required'],
+            'comment' => ['required'],
+            'subtotal' => ['required'],
+            'total' => ['required'],
+
+            "honorary1" => ['required'],
+            "description_honorary_1" => ['required'],
+            "price_honorary_1" => ['required'],
+            "honorary2" => ['nullable'],
+            "description_honorary_2" => ['nullable'],
+            "price_honorary_2" => ['nullable'],
+            "honorary3" => ['nullable'],
+            "description_honorary_3" => ['nullable'],
+            "price_honorary_3" => ['nullable'],
         ];
     }
 }

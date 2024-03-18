@@ -28,6 +28,10 @@ class SaveCompanyClientRequest extends FormRequest
             'comercial_name' => ['required'],
             'phone' => ['required'],
             'email' => ['required', 'email'],
+            'responsible_name' => 'required',
+            'responsible_lastname' => 'required',
+            'responsible_email' => ['required', 'email'],
+            'responsible_password' => ['required'],
         ];
     }
 }

@@ -18,6 +18,29 @@
 
             <form class="row g-3" method="POST" action="{{route('quotations.store')}}" enctype="multipart/form-data">
                 @csrf @method('PATCH')
+
+                <div class="col-md-12">
+                    <label for="tipo_pago" class="mb-2"><strong>Tipo de Cobro</strong></label> <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio1" value="1">
+                        <label class="form-check-label" for="inlineRadio1"><strong>Cobro Judicial</strong></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio2" value="2">
+                        <label class="form-check-label" for="inlineRadio2"><strong>Cobro Extrajudicial</strong></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio3" value="3">
+                        <label class="form-check-label" for="inlineRadio2"><strong>Estudio de
+                                Factibilidad</strong></label>
+                    </div>
+
+                    @error('type_payment_id')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+
+                </div>
+
                 <div class="col-md-4">
                     <label for="creditStartDate"
                         class="form-label @error('credit_start_date') text-danger fw-bold @enderror"><strong>Fecha de
@@ -33,6 +56,26 @@
                     </div>
 
                     @error('credit_start_date')
+                    <div class="text-danger p-2 mt-1 rounded">
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+                <div class="col-md-4">
+                    <label for="creditDueDate"
+                        class="form-label @error('credit_due_date') text-danger fw-bold @enderror"><strong>Fecha de
+                            vencimiento del Crédito</strong></label>
+                    <div class="input-group @error('credit_due_date') text-danger @enderror">
+                        <span class="input-group-text @error('credit_due_date') border border-danger @enderror">
+                            <i class="bi bi-calendar-date @error('credit_due_date') text-danger @enderror"></i>
+                        </span>
+                        <input id="creditDueDate" type="date"
+                            class="form-control @error('credit_due_date') is-invalid @enderror" name="credit_due_date"
+                            value="{{old('credit_due_date')}}">
+                    </div>
+
+                    @error('credit_due_date')
                     <div class="text-danger p-2 mt-1 rounded">
                         <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                         {{ $message }}
@@ -59,7 +102,7 @@
                     </div>
                     @enderror
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="term"
                         class="form-label  @error('term') text-danger fw-bold @enderror"><strong>Plazo</strong></label>
                     <div class="input-group @error('term') text-danger @enderror">
@@ -78,7 +121,7 @@
                     </div>
                     @enderror
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <label for="currentInterestRate"
                         class="form-label  @error('current_interest_rate') text-danger fw-bold @enderror"><strong>Tasa
                             de
@@ -99,7 +142,7 @@
                     </div>
                     @enderror
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <label for="defaultInterestRate"
                         class="form-label @error('default_interest_rate') text-danger fw-bold @enderror"><strong>Tasa de
                             Interés
@@ -121,7 +164,7 @@
                     @enderror
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="interestOwed"
                         class="form-label @error('interest_owed') text-danger fw-bold @enderror"><strong>Intereses
                             Adeudados</strong></label>
@@ -142,7 +185,8 @@
                     @enderror
                 </div>
 
-                <div class="col-md-4">
+
+                {{-- <div class="col-md-8">
                     <label for="lastPaymentDay"
                         class="form-label @error('last_payment_day') text-danger fw-bold @enderror"><strong>Dia del
                             último
@@ -154,6 +198,13 @@
                         <input id="lastPaymentDay" type="date"
                             class="form-control @error('last_payment_day') is-invalid @enderror" name="last_payment_day"
                             value="{{old('last_payment_day')}}">
+                        <!-- ... -->
+
+                        <input id="lastPaymentDay" type="date" class="form-control" name="last_payment_day"
+                            value="{{ old('last_payment_day') }}" {{ old('noApply') ? 'readonly' : '' }}>
+
+                        <!-- ... -->
+
                     </div>
 
                     @error('last_payment_day')
@@ -162,18 +213,130 @@
                         {{ $message }}
                     </div>
                     @enderror
+                </div> --}}
+
+                {{-- <div class="col-md-4 d-flex justify-content-center align-items-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="noApply" id="" value="1">
+                        <label class="form-check-label" for="inlineRadio4"><strong>No aplica</strong></label>
+                    </div>
+
+                    <div class="form-check mt-4">
+                        <input class="form-check-input" name="noApply" type="checkbox" value="1" id="flexCheckDefault"
+                            {{ old('noApply', 0)==1 ? 'checked' : '' }}>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            <strong>No aplica (Dia del último pago)</strong>
+                        </label>
+                    </div>
+
+                    @error('noApply')
+                    <div class="text-danger p-2 mt-1 rounded">
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div> --}}
+
+                <div class="col-md-8">
+                  <label for="lastPaymentDay" class="form-label @error('last_payment_day') text-danger fw-bold @enderror">
+                      <strong>Dia del último pago</strong>
+                  </label>
+                  <div class="input-group @error('last_payment_day') text-danger @enderror">
+                      <span class="input-group-text @error('last_payment_day') border border-danger @enderror">
+                          <i class="bi bi-calendar-date @error('last_payment_day') text-danger @enderror"></i>
+                      </span>
+                      <input id="lastPaymentDay" type="date" class="form-control" name="last_payment_day"
+                          value="{{ old('last_payment_day') }}" {{ old('no_apply_last_payment_day') ? 'readonly' : '' }}>
+                  </div>
+
+                  @error('last_payment_day')
+                  <div class="text-danger p-2 mt-1 rounded">
+                      <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                      {{ $message }}
+                  </div>
+                  @enderror
+              </div>
+
+              <div class="col-md-4 d-flex justify-content-center align-items-center">
+                  <div class="form-check mt-4">
+                      <input class="form-check-input" name="no_apply_last_payment_day" type="checkbox" value="1" id="flexCheckDefault"
+                          {{ old('no_apply_last_payment_day', 0)==1 ? 'checked' : '' }}>
+                      <label class="form-check-label" for="flexCheckDefault">
+                          <strong>No aplica (Dia del último pago)</strong>
+                      </label>
+                  </div>
+
+                  @error('no_apply_last_payment_day')
+                  <div class="text-danger p-2 mt-1 rounded">
+                      <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                      {{ $message }}
+                  </div>
+                  @enderror
+              </div>
+
+              <script>
+                  const checkbox = document.getElementById('flexCheckDefault');
+                  const dateInput = document.getElementById('lastPaymentDay');
+
+                  checkbox.addEventListener('change', function() {
+                      if (this.checked) {
+                          dateInput.disabled = true;
+                      } else {
+                          dateInput.disabled = false;
+                      }
+                  });
+
+                  dateInput.addEventListener('input', function() {
+                      if (this.value) {
+                          checkbox.disabled = true;
+                      } else {
+                          checkbox.disabled = false;
+                      }
+                  });
+              </script>
+
+                <div class="col-md-6">
+                    <label for="amountLastPayment"
+                        class="form-label @error('amount_last_payment') text-danger fw-bold @enderror"><strong>Monto del
+                            último
+                            pago</strong></label>
+                    <div class="input-group @error('amount_last_payment') text-danger @enderror">
+                        <span class="input-group-text @error('amount_last_payment') border border-danger @enderror">
+                            <i class="bi bi-calendar-date @error('amount_last_payment') text-danger @enderror"></i>
+                        </span>
+                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago"
+                            class="form-control @error('amount_last_payment') is-invalid @enderror"
+                            name="amount_last_payment" value="{{old('amount_last_payment')}}">
+                    </div>
+
+                    @error('amount_last_payment')
+                    <div class="text-danger p-2 mt-1 rounded">
+                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
 
-                <div class="col-md-4">
-                    <label for="currency"
-                        class="form-label @error('currency') text-danger fw-bold @enderror"><strong>Moneda</strong></label>
-                    <div class="input-group @error('currency') text-danger @enderror">
-                        <span class="input-group-text @error('currency') border border-danger @enderror">
-                            <i class="ri ri-currency-fill @error('currency') text-danger @enderror"></i>
+                <div class="col-md-6">
+                    <label for="currency_id"
+                        class="form-label @error('currency_id') text-danger fw-bold @enderror"><strong>Moneda</strong></label>
+                    <div class="input-group @error('currency_id') text-danger @enderror">
+                        <span class="input-group-text @error('currency_id') border border-danger @enderror">
+                            <i class="ri ri-currency-fill @error('currency_id') text-danger @enderror"></i>
                         </span>
-                        <input id="currency" type="text" placeholder="Moneda"
+                        {{-- <input id="currency" type="text" placeholder="Moneda"
                             class="form-control @error('currency') is-invalid @enderror" name="currency"
-                            value="{{old('currency')}}">
+                            value="{{old('currency')}}"> --}}
+                        <select name="currency_id"
+                            class="form-select @error('currency_id') border border-danger @enderror" id="">
+                            <option value="">Seleccione</option>
+                            @foreach($currencies as $currency)
+                            <option value="{{ $currency->id}}" {{ old('currency_id')==$currency->id ? 'selected' : ''
+                                }}>
+                                {{ $currency->name }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     @error('currency')
@@ -230,22 +393,6 @@
                     @enderror
                 </div>
                 <div class="col-md-12">
-                    <label for="tipo_pago" class="mb-2"><strong>Tipo de Cobro</strong></label> <br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio1" value="1">
-                        <label class="form-check-label" for="inlineRadio1">Cobro Judicial</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="type_payment_id" id="inlineRadio2" value="2">
-                        <label class="form-check-label" for="inlineRadio2">Cobro Extrajudicial</label>
-                    </div>
-
-                    @error('type_payment_id')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-
-                </div>
-                <div class="col-md-12">
                     <label for="comments"
                         class="form-label @error('comments') text-danger fw-bold @enderror"><strong>Comentarios</strong></label>
                     <div class="input-group @error('comments') text-danger @enderror">
@@ -269,7 +416,7 @@
                 </div>
 
                 <div class="text-end">
-                    @role('independent-client')
+                    @role('independent-client|company-client|employee')
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check"></i>
                         Enviar

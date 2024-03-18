@@ -5,7 +5,7 @@
         <nav class="mt-2">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{route('lawyers.index')}}">Independientes</a>
+                    <a href="{{ route('lawyers.index') }}">Independientes</a>
                 </li>
                 <li class="breadcrumb-item active">Nuevo</li>
             </ol>
@@ -16,27 +16,28 @@
         <div class="card-body">
             <h5 class="card-title">Registro de Nuevo Abogado</h5>
 
-            <form class="row g-3" method="POST" action="{{route('lawyers.store')}}">
+            <form class="row g-3" method="POST" action="{{ route('lawyers.store') }}">
                 @csrf @method('PATCH')
-                <div class="col-md-4">
-                    <label for="name" class="form-label @error('name') text-danger fw-bold @enderror">Nombre(s)</label>
+                <div class="col-md-6">
+                    <label for="name"
+                        class="form-label @error('name') text-danger fw-bold @enderror">Nombre(s)</label>
                     <div class="input-group @error('name') text-danger @enderror">
                         <span class="input-group-text @error('name') border border-danger @enderror">
                             <i class="bi bi-person @error('name') text-danger @enderror"></i>
                         </span>
                         <input placeholder="Nombres..." id="name" type="text"
                             class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{old('name')}}">
+                            value="{{ old('name') }}">
                     </div>
 
                     @error('name')
-                    <div class="text-danger p-2 mt-1 rounded">
-                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        {{ $message }}
-                    </div>
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="lastName"
                         class="form-label  @error('lastname') text-danger fw-bold @enderror">Apellido(s)</label>
                     <div class="input-group @error('lastname') text-danger @enderror">
@@ -45,17 +46,17 @@
                         </span>
                         <input placeholder="Apellidos..." id="lastName" type="text"
                             class="form-control @error('lastname') is-invalid @enderror" name="lastname"
-                            value="{{old('lastname')}}">
+                            value="{{ old('lastname') }}">
                     </div>
 
                     @error('lastname')
-                    <div class="text-danger p-2 mt-1 rounded">
-                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        {{ $message }}
-                    </div>
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="identification"
                         class="form-label  @error('identification') text-danger fw-bold @enderror">Indentificación</label>
                     <div class="input-group @error('identification') text-danger @enderror">
@@ -64,33 +65,14 @@
                         </span>
                         <input placeholder="Indentificación..." id="identification" type="text"
                             class="form-control @error('identification') is-invalid @enderror" name="identification"
-                            value="{{old('identification')}}">
+                            value="{{ old('identification') }}">
                     </div>
 
                     @error('identification')
-                    <div class="text-danger p-2 mt-1 rounded">
-                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div>
-                <div class="col-md-6">
-                    <label for="email" class="form-label  @error('email') text-danger fw-bold @enderror">Correo
-                        electrónico</label>
-                    <div class="input-group @error('email') text-danger @enderror">
-                        <span class="input-group-text @error('email') border border-danger @enderror">
-                            <i class="bi bi-envelope @error('email') text-danger @enderror"></i>
-                        </span>
-                        <input placeholder="Correo electrónico..." id="email" type="text"
-                            class="form-control @error('email') is-invalid @enderror" name="email"
-                            value="{{old('email')}}">
-                    </div>
-
-                    @error('email')
-                    <div class="text-danger p-2 mt-1 rounded">
-                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        {{ $message }}
-                    </div>
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <div class="col-md-6">
@@ -102,16 +84,55 @@
                         </span>
                         <input placeholder="Número Telefónico..." id="phone" type="text"
                             class="form-control @error('phone') is-invalid @enderror" name="phone"
-                            value="{{old('phone')}}">
+                            value="{{ old('phone') }}">
                     </div>
 
                     @error('phone')
-                    <div class="text-danger p-2 mt-1 rounded">
-                        <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-                        {{ $message }}
-                    </div>
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
+
+                <div class="col-md-6">
+                    <label for="email" class="form-label  @error('email') text-danger fw-bold @enderror">Correo
+                        electrónico</label>
+                    <div class="input-group @error('email') text-danger @enderror">
+                        <span class="input-group-text @error('email') border border-danger @enderror">
+                            <i class="bi bi-envelope @error('email') text-danger @enderror"></i>
+                        </span>
+                        <input placeholder="Correo electrónico..." id="email" type="text"
+                            class="form-control @error('email') is-invalid @enderror" name="email"
+                            value="{{ old('email') }}">
+                    </div>
+
+                    @error('email')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-building"></i>
+                        </span>
+                        <input id="password" placeholder="Contraseña" type="password" class="form-control"
+                            name="password">
+                    </div>
+
+                    @error('password')
+                        <div class="text-danger p-2 mt-1 rounded">
+                            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
 
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">

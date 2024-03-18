@@ -26,7 +26,8 @@ class SaveLawyersRequest extends FormRequest
             'lastname' => ['required'],
             'identification' => ['required'],
             'phone' => ['required'],
-            'email' => ['required', 'email']
+            'email' => ['required', 'email'],
+            'password' => ['nullable']
         ];
     }
 }

@@ -24,11 +24,12 @@ class DatabaseSeeder extends Seeder
         $this->call([MessageSeeder::class]);
 
         $this->call([TypeCaseSeeder::class]);
-        $this->call([PersonSeeder::class]);
+        // $this->call([PersonSeeder::class]);
         $this->call([ClientSeeder::class]);
         $this->call([StatusSeeder::class]);
         $this->call([TypePaymentSeeder::class]);
-        $this->call([QuotationSeeder::class]);
-        $this->call([LegalCaseSeeder::class]);
+        $this->call([CurrencySeeder::class]);
+        // $this->call([QuotationSeeder::class]);
+        // $this->call([LegalCaseSeeder::class]);
     }
 }
