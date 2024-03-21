@@ -86,14 +86,4 @@
         </div>
     </div>
 
-    {{-- <script>
-        function confirmDelete(event) {
-            event.preventDefault(); // Detener el envío del formulario por defecto
-
-            if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
-                document.getElementById('deleteForm').submit(); // Enviar el formulario
-            }
-        }
-    </script> --}}
-
 </x-layouts.app>

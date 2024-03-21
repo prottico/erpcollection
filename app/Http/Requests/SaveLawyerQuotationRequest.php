@@ -28,9 +28,9 @@ class SaveLawyerQuotationRequest extends FormRequest
             'subtotal' => ['required'],
             'total' => ['required'],
 
-            "honorary1" => ['required'],
-            "description_honorary_1" => ['required'],
-            "price_honorary_1" => ['required'],
+            "honorary1" => ['nullable'],
+            "description_honorary_1" => ['nullable'],
+            "price_honorary_1" => ['nullable'],
             "honorary2" => ['nullable'],
             "description_honorary_2" => ['nullable'],
             "price_honorary_2" => ['nullable'],

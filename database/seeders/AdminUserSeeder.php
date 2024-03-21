@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 
 class AdminUserSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
         // Admin user
         $userAdmin = User::create([
             'name' => 'Administrador General',
@@ -26,7 +28,8 @@ class AdminUserSeeder extends Seeder
 
         Person::create([
             'name' => "Administrador",
-            'user_id' => $userAdmin->id
+            'user_id' => $userAdmin->id,
+            'token' => $faker->sha256,
         ]);
     }
 }

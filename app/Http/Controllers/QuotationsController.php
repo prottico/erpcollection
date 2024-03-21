@@ -47,9 +47,10 @@ class QuotationsController extends Controller
 
     public function store(SaveQuotationRequest $request): RedirectResponse
     {
+        // dd($request->all());
         try {
             $validatedData = $request->validated();
-            // $this->saveBaseExecutionDocumentIfExists($request);
+            $this->saveBaseExecutionDocumentIfExists($request);
             if (!$request->hasFile('base_execution_document')) {
                 return null;
             }
@@ -69,26 +70,26 @@ class QuotationsController extends Controller
         }
     }
 
-    // private function saveBaseExecutionDocumentIfExists(SaveQuotationRequest $request): string|null
-    // {
+    private function saveBaseExecutionDocumentIfExists($request)
+    {
 
-    //     //         if ($request->hasFile('base_execution_document')) {
-    //     //             $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
-    //     //             // foreach ($request->file('base_execution_document') as $file) {
-    //     //             //     $file->store('public');
-    //     //             // }
-    //     //         }
+        //         if ($request->hasFile('base_execution_document')) {
+        //             $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
+        //             // foreach ($request->file('base_execution_document') as $file) {
+        //             //     $file->store('public');
+        //             // }
+        //         }
 
-    //     if (!$request->hasFile('base_execution_document')) {
-    //         return null;
-    //     }
+        if (!$request->hasFile('base_execution_document')) {
+            return null;
+        }
 
-    //     $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
-    //     $validatedData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
-    //     $validatedData['path_base_execution_document'] = $path;
+        $path = $request->file('base_execution_document')->store('base_execution_documents', 'public');
+        $validatedData['base_execution_document'] = $request->file('base_execution_document')->getClientOriginalName();
+        $validatedData['path_base_execution_document'] = $path;
 
-    //     // return $path;
-    // }
+        // return $path;
+    }
 
     private function setAdditionalProperties(&$validatedData, SaveQuotationRequest $request): array
     {
@@ -135,7 +136,7 @@ class QuotationsController extends Controller
             $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase', 'budget', 'budget.product'])->first();
             $lawyers = User::where('type_user_id', 3)->whereHas('person')->with(['person'])->get();
             $typeCases = TypeCase::all();
-            $currency = Currency::find($quotation->currency_id);
+            $currencies = Currency::all();
 
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
@@ -146,7 +147,7 @@ class QuotationsController extends Controller
                     $view = 'quotations.show';
                 }
             };
-            return view($view, compact('quotation', 'lawyers', 'typeCases', 'currency'));
+            return view($view, compact('quotation', 'lawyers', 'typeCases', 'currencies'));
         } catch (\Throwable $th) {
             Log::error(['Message' => $th->getMessage()]);
         }
@@ -167,6 +168,7 @@ class QuotationsController extends Controller
     {
         try {
             $validatedData = $request->validated();
+            dd($validatedData);
             $quotation = Quotation::where('token', $token)->with(['budget', 'budget.products', 'typeCase'])->first();
 
             $budgetData =  array_merge(array_diff_key($validatedData, ['type_case_id' => null, 'honorary1' => null, 'description_honorary_1' => null, 'price_honorary_1' => null]));
@@ -212,7 +214,15 @@ class QuotationsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $lawyer = Quotation::where('id', $id)->first();
+            $lawyer->delete();
+            return redirect()->route('quotations.index')->with('success', 'Registro eliminado correctamente!');
+        } catch (\Throwable $th) {
+            Log::error('Error:', [
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 
     public function assignLawyer(Request $request)
@@ -226,6 +236,22 @@ class QuotationsController extends Controller
         } catch (\Throwable $th) {
             Log::error([
                 'Message' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function updateQuotationByAdmin(SaveQuotationRequest $request, string $token)
+    {
+        try {
+            $validatedData = $request->validated();
+            $validatedData['token'] = $this->getFakerToken();
+            $quotation = Quotation::where('token', $token)->first();
+            $quotation->update($validatedData);
+            return redirect()->route('quotations.show', $quotation->token)->with('success', 'Registro actualizado correctamente!');
+        } catch (\Throwable $th) {
+            Log::error([
+                'Message' => $th->getMessage(),
+                'data' => $validatedData,
             ]);
         }
     }
