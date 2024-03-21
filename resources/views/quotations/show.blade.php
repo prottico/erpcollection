@@ -16,23 +16,23 @@
         <div class="card-body">
             <h5 class="card-title">Cotización <strong>{{ $quotation->code }}</strong></h5>
 
-            <form class="row g-3" method="POST" action="{{ route('quotations.store') }}" enctype="multipart/form-data">
+            <form class="row g-3" method="POST" action="{{ route('quotations.update', $quotation->token) }}" enctype="multipart/form-data">
                 @csrf @method('PATCH')
 
                 <div class="col-md-12">
                     <label for="tipo_pago" class="mb-2"><strong>Tipo de Cobro</strong></label> <br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" disabled @if ($quotation->type_payment_id == 1) checked @endif
-                            type="radio" name="type_payment_id" readonly id="inlineRadio1" value="1">
+                        <input class="form-check-input" @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) disabled @endif @if ($quotation->type_payment_id == 1) checked @endif
+                            type="radio" name="type_payment_id" id="inlineRadio1" value="1">
                         <label class="form-check-label text-dark" for="inlineRadio1">Cobro Judicial</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input disabled class="form-check-input" @if ($quotation->type_payment_id == 2) checked @endif
+                        <input @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) disabled @endif class="form-check-input" @if ($quotation->type_payment_id == 2) checked @endif
                             type="radio" name="type_payment_id" id="inlineRadio2" value="2">
                         <label class="form-check-label" for="inlineRadio2">Cobro Extrajudicial</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input disabled class="form-check-input" @if ($quotation->type_payment_id == 3) checked @endif
+                        <input @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) disabled @endif class="form-check-input" @if ($quotation->type_payment_id == 3) checked @endif
                             type="radio" name="type_payment_id" id="inlineRadio2" value="2">
                         <label class="form-check-label" for="inlineRadio2">Estudio de
                             Factibilidad</label>
@@ -48,7 +48,7 @@
                         <span class="input-group-text @error('credit_start_date') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('credit_start_date') text-danger @enderror"></i>
                         </span>
-                        <input id="creditStartDate" type="date" readonly
+                        <input id="creditStartDate" type="date" @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('credit_start_date') is-invalid @enderror"
                             name="credit_start_date"
                             value="{{ old('credit_start_date', $quotation->credit_start_date) }}">
@@ -70,7 +70,7 @@
                         <span class="input-group-text @error('credit_due_date') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('credit_due_date') text-danger @enderror"></i>
                         </span>
-                        <input id="creditDueDate" type="date"
+                        <input id="creditDueDate" type="date"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('credit_due_date') is-invalid @enderror" name="credit_due_date"
                             value="{{ old('credit_due_date', $quotation->credit_due_date) }}">
                     </div>
@@ -91,7 +91,7 @@
                         <span class="input-group-text @error('debt_capital') border border-danger @enderror">
                             <i class="bi bi-cash @error('debt_capital') text-danger @enderror"></i>
                         </span>
-                        <input placeholder="Capital Adeudado" id="debtCapital" type="text" readonly
+                        <input placeholder="Capital Adeudado" id="debtCapital" type="text"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('debt_capital') is-invalid @enderror" name="debt_capital"
                             value="{{ old('debt_capital', $quotation->debt_capital) }}">
                     </div>
@@ -110,7 +110,7 @@
                         <span class="input-group-text @error('term') border border-danger @enderror">
                             <i class="bx bxs-calendar @error('term') text-danger @enderror"></i>
                         </span>
-                        <input placeholder="Plazo" id="term" type="text" readonly
+                        <input placeholder="Plazo" id="term" type="text"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('term') is-invalid @enderror" name="term"
                             value="{{ old('term', $quotation->term) }}">
                     </div>
@@ -132,7 +132,7 @@
                             <i class="bx bx-money @error('current_interest_rate') text-danger @enderror"></i>
                         </span>
                         <input placeholder="Tasa de Interés Corriente" id="currentInterestRate" type="text"
-                            readonly class="form-control @error('current_interest_rate') is-invalid @enderror"
+                             @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif class="form-control @error('current_interest_rate') is-invalid @enderror"
                             name="current_interest_rate"
                             value="{{ old('current_interest_rate', $quotation->current_interest_rate) }}">
                     </div>
@@ -155,7 +155,7 @@
                             <i class="bi bi-piggy-bank @error('default_interest_rate') text-danger @enderror"></i>
                         </span>
                         <input placeholder="Tasa de Interés Moratoria" id="defaultInterestRate" type="text"
-                            readonly class="form-control @error('default_interest_rate') is-invalid @enderror"
+                             @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif class="form-control @error('default_interest_rate') is-invalid @enderror"
                             name="default_interest_rate"
                             value="{{ old('default_interest_rate', $quotation->default_interest_rate) }}">
                     </div>
@@ -176,7 +176,7 @@
                         <span class="input-group-text @error('interest_owed') border border-danger @enderror">
                             <i class="bi bi-currency-exchange @error('interest_owed') text-danger @enderror"></i>
                         </span>
-                        <input placeholder="Tasa de Interés Moratoria" id="interestOwed" type="text" readonly
+                        <input placeholder="Tasa de Interés Moratoria" id="interestOwed" type="text"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('interest_owed') is-invalid @enderror" name="interest_owed"
                             value="{{ old('interest_owed', $quotation->interest_owed) }}">
                     </div>
@@ -198,7 +198,7 @@
                         <span class="input-group-text @error('last_payment_day') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('last_payment_day') text-danger @enderror"></i>
                         </span>
-                        <input id="lastPaymentDay" type="date" readonly disabled
+                        <input id="lastPaymentDay" type="date"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('last_payment_day') is-invalid @enderror"
                             name="last_payment_day"
                             value="{{ old('last_payment_day', $quotation->last_payment_day) }}">
@@ -214,7 +214,7 @@
 
                 <div class="col-md-4 d-flex justify-content-center align-items-center">
                     <div class="form-check mt-4">
-                        <input class="form-check-input" name="noApply" disabled type="checkbox" value="1"
+                        <input class="form-check-input" name="noApply"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) disabled @endif type="checkbox" value="1"
                             id="flexCheckDefault" @if ($quotation->no_apply_last_payment_day == 1) checked @endif>
                         <label class="form-check-label" for="flexCheckDefault" style="color: black !important;">
                             <strong>No aplica (Dia del último pago)</strong>
@@ -239,7 +239,7 @@
                         <span class="input-group-text @error('amount_last_payment') border border-danger @enderror">
                             <i class="bi bi-calendar-date @error('amount_last_payment') text-danger @enderror"></i>
                         </span>
-                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago" readonly
+                        <input id="amountLastPayment" type="text" placeholder="Monto del último pago"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('amount_last_payment') is-invalid @enderror"
                             name="amount_last_payment" value="{{ $quotation->amount_last_payment }}">
                     </div>
@@ -253,12 +253,25 @@
                         <span class="input-group-text @error('currency') border border-danger @enderror">
                             <i class="ri ri-currency-fill @error('currency') text-danger @enderror"></i>
                         </span>
-                        <input id="currency" type="text" placeholder="Moneda" readonly
-                            class="form-control @error('currency') is-invalid @enderror" name="currency"
-                            value="{{ $currency->name }}">
+                        {{-- <input id="currency" type="text" placeholder="Moneda"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
+                            class="form-control @error('currency') is-invalid @enderror" name="currency_id"
+                            value="{{ $currency->name }}"> --}}
+
+
+                            <select name="currency_id" @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) disabled @endif class="form-select @error('currency_id') border border-danger @enderror" id="currency_id">
+                                <option value="">Seleccione</option>
+                                @foreach ($currencies as $currency)
+                                    <option value="{{ $currency->id }}"
+                                        {{ old('currency_id', $quotation->currency_id ?? null) == $currency->id
+                                            ? 'selected'
+                                            : '' }}>
+                                        {{ $currency->name }}
+                                    </option>
+                                @endforeach
+                        </select>
                     </div>
 
-                    @error('currency')
+                    @error('currency_id')
                         <div class="text-danger p-2 mt-1 rounded">
                             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                             {{ $message }}
@@ -299,7 +312,7 @@
                                     class="ri ri-file-upload-line @error('base_execution_document') text-danger @enderror"></i>
                             </span>
                             <input id="base_execution_document" type="text" class="form-control border-none"
-                                name="base_execution_document_prev" readonly
+                                name="base_execution_document_prev"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                 value="{{ $quotation->base_execution_document }}">
                         </div>
                     </div>
@@ -331,13 +344,13 @@
 
                     </div>
 
-                    @error('description')
+                </div> --}}
+                    @error('base_execution_document')
                     <div class="text-danger p-2 mt-1 rounded">
                         <i class="bi bi-exclamation-triangle-fill mr-2"></i>
                         {{ $message }}
                     </div>
                     @enderror
-                </div> --}}
 
                 <div class="col-md-12">
                     <label for="description"
@@ -353,7 +366,7 @@
                             placeholder="Breve descripción del
                         caso"
                             class="form-control @error('description') is-invalid @enderror" name="description"
-                            readonly value="{{ old('description', $quotation->description) }}">
+                            @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif value="{{ old('description', $quotation->description) }}">
                     </div>
 
                     @error('description')
@@ -388,7 +401,7 @@
                         <span class="input-group-text @error('comments') border border-danger @enderror">
                             <i class="bi bi-chat-left-dots @error('comments') text-danger @enderror"></i>
                         </span>
-                        <input id="comments" type="text" placeholder="Comentarios" readonly
+                        <input id="comments" type="text" placeholder="Comentarios"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                             class="form-control @error('comments') is-invalid @enderror" name="comments"
                             value="{{ old('comments', $quotation->comments) }}">
                     </div>
@@ -411,7 +424,7 @@
                                 <span class="input-group-text">
                                     <i class="ri ri-suitcase-line"></i>
                                 </span>
-                                <input id="cost" type="text" placeholder="Determina el costo" readonly
+                                <input id="cost" type="text" placeholder="Determina el costo"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                     class="form-control" name="cost" value="{{ $quotation->typeCase->name }}">
                             </div>
                         </div>
@@ -425,7 +438,7 @@
                                 <span class="input-group-text @error('honorary1') border border-danger @enderror">
                                     <i class="ri ri-checkbox-circle-fill @error('honorary1') text-danger @enderror"></i>
                                 </span>
-                                <input id="honorary1" type="text" placeholder="Honorario" readonly
+                                <input id="honorary1" type="text" placeholder="Honorario"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                     class="form-control @error('honorary1') is-invalid @enderror" name="honorary1"
                                     value="{{ old('honorary1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->name : '') }}">
                             </div>
@@ -446,7 +459,7 @@
                                     <i
                                         class="ri ri-pencil-fill @error('description_honorary_1') text-danger @enderror"></i>
                                 </span>
-                                <input id="description_honorary_1" type="text" placeholder="Descripción" readonly
+                                <input id="description_honorary_1" type="text" placeholder="Descripción"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                     class="form-control @error('description_honorary_1') is-invalid @enderror"
                                     name="description_honorary_1"
                                     value="{{ old('description_honorary_1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->description : '') }}">
@@ -468,7 +481,7 @@
                                     <i
                                         class="ri ri-money-dollar-circle-fill @error('price_honorary_1') text-danger @enderror"></i>
                                 </span>
-                                <input id="price_honorary_1" type="text" placeholder="Precio" readonly
+                                <input id="price_honorary_1" type="text" placeholder="Precio"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                     class="form-control @error('price_honorary_1') is-invalid @enderror"
                                     name="price_honorary_1"
                                     value="{{ old('price_honorary_1', $quotation->budget && $quotation->budget->product ? $quotation->budget->product->price : '') }}">
@@ -489,7 +502,7 @@
                                 <span class="input-group-text @error('iva') border border-danger @enderror">
                                     <i class="ri ri-exchange-dollar-line @error('iva') text-danger @enderror"></i>
                                 </span>
-                                <input id="iva" type="text" placeholder="Determina el iva" readonly
+                                <input id="iva" type="text" placeholder="Determina el iva"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                     class="form-control @error('iva') is-invalid @enderror" name="iva"
                                     value="{{ old('iva', $quotation->budget ? $quotation->budget->iva : '') }}">
                             </div>
@@ -509,7 +522,7 @@
                                 <span class="input-group-text @error('subtotal') border border-danger @enderror">
                                     <i class="ri ri-exchange-dollar-line @error('subtotal') text-danger @enderror"></i>
                                 </span>
-                                <input id="subtotal" type="text" placeholder="Determina el subtotal" readonly
+                                <input id="subtotal" type="text" placeholder="Determina el subtotal"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                     class="form-control @error('subtotal') is-invalid @enderror" name="subtotal"
                                     value="{{ old('subtotal', $quotation->budget ? $quotation->budget->subtotal : '') }}">
                             </div>
@@ -529,7 +542,7 @@
                                 <span class="input-group-text @error('total') border border-danger @enderror">
                                     <i class="ri ri-exchange-dollar-line @error('total') text-danger @enderror"></i>
                                 </span>
-                                <input id="total" type="text" placeholder="Determina el total" readonly
+                                <input id="total" type="text" placeholder="Determina el total"  @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif
                                     class="form-control @error('total') is-invalid @enderror" name="total"
                                     value="{{ old('total', $quotation->budget ? $quotation->budget->total : '') }}">
                             </div>
@@ -552,7 +565,7 @@
                                     <i class="ri ri-chat-1-fill @error('comment') text-danger @enderror"></i>
                                 </span>
                                 <input id="comment" type="text" placeholder="Dejarle un comentario al cliente"
-                                    readonly class="form-control @error('comment') is-invalid @enderror" name="comment"
+                                     @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) readonly @endif class="form-control @error('comment') is-invalid @enderror" name="comment"
                                     value="{{ old('comment', $quotation->budget ? $quotation->budget->comment : '') }}">
                             </div>
 
@@ -604,7 +617,7 @@
                             Asignar Abogado
                         </button>
                     @endrole
-                    @role('independent')
+                    @role('independent|general-admin')
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check"></i>
                             Enviar

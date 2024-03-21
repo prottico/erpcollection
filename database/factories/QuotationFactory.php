@@ -34,6 +34,7 @@ class QuotationFactory extends Factory
             'credit_start_date' =>  \Carbon\Carbon::parse($this->faker->dateTime()->format('d-m-Y')),
             'credit_due_date' =>  \Carbon\Carbon::parse($this->faker->dateTime()->format('d-m-Y')),
             'debt_capital' => $this->faker->randomFloat(2, 0, 10000),
+            'amount_last_payment' => $this->faker->randomFloat(2, 0, 10000),
             'term' => $this->faker->numberBetween(1, 30) . ' días',
             'current_interest_rate' => $this->faker->randomFloat(2, 0, 100),
             'default_interest_rate' => $this->faker->randomFloat(2, 0, 100),

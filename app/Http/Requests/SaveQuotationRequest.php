@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
 
 class SaveQuotationRequest extends FormRequest
 {
@@ -23,6 +24,9 @@ class SaveQuotationRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
         return [
             'credit_start_date' => 'required|date',
             'debt_capital' => 'required|numeric',
@@ -31,7 +35,7 @@ class SaveQuotationRequest extends FormRequest
             'default_interest_rate' => 'required|numeric',
             'interest_owed' => 'required|numeric',
             'currency_id' => 'required',
-            'base_execution_document' => 'required|file|mimes:pdf,doc,docx|max:10240',
+            'base_execution_document' => $user->hasRole(['general-admin', 'lawyer']) ? 'nullable' : 'required',
             'description' => 'required|string',
             'type_payment_id' => [
                 'required',
