@@ -129,22 +129,22 @@ class QuotationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $token)
+    public function edit(string $token)
     {
         try {
             $view = '';
             $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase', 'budget', 'budget.product'])->first();
             $lawyers = User::where('type_user_id', 3)->whereHas('person')->with(['person'])->get();
             $typeCases = TypeCase::all();
-            $currencies = Currency::all();
+            $currencies = $this->getCurrencies();
 
             if (Auth::check()) {
                 /** @var \App\Models\User $user */
                 $user = Auth::user();
                 if ($user->hasRole('lawyer')) {
-                    $view = 'quotations.lawyers.show';
+                    $view = 'quotations.lawyers.edit';
                 } else {
-                    $view = 'quotations.show';
+                    $view = 'quotations.edit';
                 }
             };
             return view($view, compact('quotation', 'lawyers', 'typeCases', 'currencies'));
@@ -156,9 +156,11 @@ class QuotationsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function show(string $token)
     {
-        //
+        $quotation = Quotation::where('token', $token)->with(['client', 'client.person', 'documents', 'typeCase', 'budget', 'budget.product'])->first();
+        $currencies = $this->getCurrencies();
+        return view('quotations.show', compact('quotation', 'currencies'));
     }
 
     /**
@@ -228,8 +230,13 @@ class QuotationsController extends Controller
     public function assignLawyer(Request $request)
     {
         try {
-            $lawyer = User::where('id', $request->input('lawyerId'))->with('person')->first();
             $quotation = Quotation::find($request->input('quotationId'));
+
+            if (!$request->input('lawyerId')) {
+                return redirect()->back()->with('error', 'Obligatoriamente debes seleecionar un abogado!');
+            }
+
+            $lawyer = User::where('id', $request->input('lawyerId'))->with('person')->first();
             $quotation->lawyer_id = $lawyer->person->id;
             $quotation->save();
             return redirect()->route('quotations.show', $quotation->token)->with('success', 'Abogado asignado correctamente');
@@ -244,10 +251,11 @@ class QuotationsController extends Controller
     {
         try {
             $validatedData = $request->validated();
+            // dd($validatedData);
             $validatedData['token'] = $this->getFakerToken();
             $quotation = Quotation::where('token', $token)->first();
             $quotation->update($validatedData);
-            return redirect()->route('quotations.show', $quotation->token)->with('success', 'Registro actualizado correctamente!');
+            return redirect()->route('quotations.edit', $quotation->token)->with('success', 'Registro actualizado correctamente!');
         } catch (\Throwable $th) {
             Log::error([
                 'Message' => $th->getMessage(),

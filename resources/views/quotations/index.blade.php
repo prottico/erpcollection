@@ -79,13 +79,18 @@
                                             </td>
                                             @role('general-admin|independent-client')
                                                 <td class="row">
-                                                    <div class="col-6">
+                                                    <div class="col-4 p-0 px-md-1">
                                                         <a href="{{ route('quotations.show', $item->token) }}"
                                                             role="button" class="btn btn-info"><i
                                                                 class="bi bi-eye"></i></a>
                                                     </div>
+                                                    <div class="col-4 p-0 px-md-1">
+                                                        <a href="{{ route('quotations.edit', $item->token) }}"
+                                                            role="button" class="btn btn-warning"><i
+                                                                class="bi bi-pencil"></i></a>
+                                                    </div>
 
-                                                    <div class="col-6 p-0 w-50">
+                                                    <div class="col-4 p-0 px-md-1">
                                                         <form id="deleteForm"
                                                             action="{{ route('quotations.destroy', $item->id) }}"
                                                             method="POST">

@@ -256,9 +256,20 @@
                         <span class="input-group-text @error('currency') border border-danger @enderror">
                             <i class="ri ri-currency-fill @error('currency') text-danger @enderror"></i>
                         </span>
-                        <input id="currency" type="text" placeholder="Moneda" readonly
+                        {{-- <input id="currency" type="text" placeholder="Moneda" readonly
                             class="form-control @error('currency') is-invalid @enderror" name="currency"
-                            value="{{ $currency->name }}">
+                            value="{{ $currency->name }}"> --}}
+                            <select name="currency_id" @if (!auth()->user()->hasRole(['general-admin', 'lawyer']) ) disabled @endif class="form-select @error('currency_id') border border-danger @enderror" id="currency_id">
+                                <option value="">Seleccione</option>
+                                @foreach ($currencies as $currency)
+                                    <option value="{{ $currency->id }}"
+                                        {{ old('currency_id', $quotation->currency_id ?? null) == $currency->id
+                                            ? 'selected'
+                                            : '' }}>
+                                        {{ $currency->name }}
+                                    </option>
+                                @endforeach
+                        </select>
                     </div>
 
                     @error('currency')

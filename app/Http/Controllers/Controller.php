@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
-use App\Models\IdentityType;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-
-use App\Models\Person;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
+use App\Models\Client;
+use App\Models\Person;
+use App\Models\Currency;
 use Faker\Factory as Faker;
+
+use App\Models\IdentityType;
+use Illuminate\Support\Facades\Log;
 use PHPUnit\Framework\MockObject\Builder\Identity;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+    public function getCurrencies()
+    {
+        return Currency::all();
+    }
 
     public function getIdentityTypes()
     {

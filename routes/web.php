@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
 
         // Admin Cotizaciones
         Route::get('/cotizaciones', [QuotationsController::class, 'index'])->name('quotations.index');
-        Route::post('/asignar-abogado', [QuotationsController::class, 'assignLawyer'])->name('quotations.assign.lawyer');
+        Route::post('/admin/asignar-abogado', [QuotationsController::class, 'assignLawyer'])->name('quotations.assign.lawyer');
         Route::delete('/cotizaciones/{id}', [QuotationsController::class, 'destroy'])->name('quotations.destroy');
 
         // Admin Creacion de Usuarios
@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['middleware' => ['role:general-admin|independent-client|company-client|employee']], function () {
         Route::get('/cotizaciones/nuevo', [QuotationsController::class, 'create'])->name('quotations.create');
         Route::patch('/cotizaciones/nuevo', [QuotationsController::class, 'store'])->name('quotations.store');
+        Route::get('/cotizacion/editar/{token}', [QuotationsController::class, 'edit'])->name('quotations.edit');
         Route::get('/cotizaciones/{token}', [QuotationsController::class, 'show'])->name('quotations.show');
         Route::patch('/cotizaciones/update/{token}', [QuotationsController::class, 'updateQuotationByAdmin'])->name('quotations.update');
 
@@ -94,7 +95,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['middleware' => ['role:lawyer']], function () {
         Route::get('/cotizaciones-asignadas', [LawyersQuotationsController::class, 'index'])->name('lawyers.quotations.index');
         Route::get('/cotizaciones-asignadas/{token}', [QuotationsController::class, 'show'])->name('lawyers.quotations.show');
-        Route::patch('/cotizaciones-asignadas/{token}', [QuotationsController::class, 'update'])->name('lawyers.quotations.update');
+        // Route::patch('/cotizaciones-asignadas/{token}', [QuotationsController::class, 'update'])->name('lawyers.quotations.update');
     });
 
     // Cotizaciones por Clientes
