@@ -1,6 +1,6 @@
 <x-layouts.app>
 
-    <x-layouts.partials.breadcrum :title="'Usuarios'" :route="'admin.users.index'" :itemActive="'Nuevo'"/>
+    <x-layouts.partials.breadcrum :title="'Usuarios'" :subTitle="'Usuarios'" :route="'admin.users.index'" :itemActive="'Nuevo'"/>
 
     <div class="card">
         <div class="card-body">
