@@ -95,7 +95,8 @@ Route::middleware('auth')->group(function () {
     Route::group(['middleware' => ['role:lawyer']], function () {
         Route::get('/cotizaciones-asignadas', [LawyersQuotationsController::class, 'index'])->name('lawyers.quotations.index');
         Route::get('/cotizaciones-asignadas/{token}', [QuotationsController::class, 'show'])->name('lawyers.quotations.show');
-        // Route::patch('/cotizaciones-asignadas/{token}', [QuotationsController::class, 'update'])->name('lawyers.quotations.update');
+        Route::get('/cotizacion-asigandas/editar/{token}', [QuotationsController::class, 'edit'])->name('lawyers.quotations.edit');
+        Route::patch('/cotizaciones-asignadas/editar/{token}', [LawyersQuotationsController::class, 'update'])->name('lawyers.quotations.update');
     });
 
     // Cotizaciones por Clientes

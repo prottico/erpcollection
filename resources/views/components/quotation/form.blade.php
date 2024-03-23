@@ -562,7 +562,6 @@
                         @enderror
                     </div>
                 @endif
-
             @endrole
 
             @role('general-admin')

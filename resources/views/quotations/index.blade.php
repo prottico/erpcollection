@@ -77,36 +77,56 @@
                                                 {{ \Carbon\Carbon::parse($item->last_payment_day)->format('d-m-Y') }}
                                                 {{-- {{ $item->last_payment_day->format('d-m-Y') }} --}}
                                             </td>
-                                            @role('general-admin|independent-client')
+
+                                                <td class="row">
+                                                    @role('independent-client')
+                                                        <div class="col-4 p-0 px-md-1">
+                                                            <a href="{{ route('quotations.show', $item->token) }}"
+                                                                role="button" class="btn btn-info"><i
+                                                                    class="bi bi-eye"></i></a>
+                                                        </div>
+                                                    @endrole
+
+                                                    @role('general-admin')
+                                                        <div class="col-4 p-0 px-md-1">
+                                                            <a href="{{ route('quotations.show', $item->token) }}"
+                                                                role="button" class="btn btn-info"><i
+                                                                    class="bi bi-eye"></i></a>
+                                                        </div>
+
+                                                        <div class="col-4 p-0 px-md-1">
+                                                            <a href="{{ route('quotations.edit', $item->token) }}"
+                                                                role="button" class="btn btn-warning"><i
+                                                                    class="bi bi-pencil"></i></a>
+                                                        </div>
+
+                                                        <div class="col-4 p-0 px-md-1">
+                                                            <form id="deleteForm"
+                                                                action="{{ route('quotations.destroy', $item->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button class="btn btn-danger">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endrole
+
+                                                </td>
+                                            @role('lawyer')
                                                 <td class="row">
                                                     <div class="col-4 p-0 px-md-1">
-                                                        <a href="{{ route('quotations.show', $item->token) }}"
+                                                        <a href="{{ route('lawyers.quotations.show', $item->token) }}"
                                                             role="button" class="btn btn-info"><i
                                                                 class="bi bi-eye"></i></a>
                                                     </div>
+
                                                     <div class="col-4 p-0 px-md-1">
-                                                        <a href="{{ route('quotations.edit', $item->token) }}"
+                                                        <a href="{{ route('lawyers.quotations.edit', $item->token) }}"
                                                             role="button" class="btn btn-warning"><i
                                                                 class="bi bi-pencil"></i></a>
                                                     </div>
-
-                                                    <div class="col-4 p-0 px-md-1">
-                                                        <form id="deleteForm"
-                                                            action="{{ route('quotations.destroy', $item->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-danger">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </td>
-                                            @endrole
-                                            @role('lawyer')
-                                                <td>
-                                                    <a href="{{ route('lawyers.quotations.show', $item->token) }}"
-                                                        role="button" class="btn btn-info"><i class="bi bi-eye"></i></a>
                                                 </td>
                                             @endrole
                                         </tr>
